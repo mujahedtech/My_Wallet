@@ -17,7 +17,21 @@ namespace My_Wallet
 
         private void Button_Clicked(object sender, EventArgs e)
         {
-            DisplayAlert("",Rad1.Content.ToString(),"Ok");
+            gridtest.IsVisible = true;
+            if (gridtest.Scale==0)
+            {
+                gridtest.ScaleTo(1, 1000, Easing.SpringIn);
+               
+                return;
+            }
+            gridtest.ScaleTo(0, 1000, Easing.SpringIn);
+
+        }
+
+        private async void Button_Clicked_1(object sender, EventArgs e)
+        {
+            await Navigation.PushModalAsync(new Views.ManageAccounts());
+           
         }
     }
 }

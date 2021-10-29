@@ -9,48 +9,60 @@
     <ContentPage.Resources>
         <ResourceDictionary>
 
-            <ControlTemplate x:Key="MUjahed" x:DataType="RadioButton">
-
-                <Frame x:Name="MainFrame" BackgroundColor="Gray" Padding="0" CornerRadius="10">
-                    <Frame BorderColor="Transparent"  Margin="2" Padding="2"  CornerRadius="10" >
-
-                        <StackLayout Margin="10,0">
-                            <Label x:Name="PlaceHolder"  Text="{TemplateBinding FontFamily}"/>
-                            <Grid>
-                                <Entry x:Name="Entry"  Text="{Binding Source={RelativeSource TemplatedParent}, Path=Content, UpdateSourceEventName=PropertyChanged}" >
-                                    <Entry.Triggers>
-                                        <Trigger TargetType="Entry"
-                 Property="IsFocused" Value="True">
-                                            <Setter Property="BackgroundColor" TargetName="MainFrame" Value="DodgerBlue" />
-                                            <Setter Property="TextColor" TargetName="PlaceHolder" Value="DodgerBlue" />
-                                            <Setter Property="TextColor" TargetName="Entry" Value="DodgerBlue" />
-                                            <!-- multiple Setters elements are allowed -->
-                                        </Trigger>
-                                    </Entry.Triggers>
-                                </Entry>
-                                <BoxView  VerticalOptions="End" BackgroundColor="White" HeightRequest="2" Margin="0,0,0,6"/>
-                            </Grid>
-
-                        </StackLayout>
-                    </Frame>
-
-                </Frame>
-               
-                
-                
-            </ControlTemplate>
+           
 
 
            
 
         </ResourceDictionary>
     </ContentPage.Resources>
-    
-    <StackLayout Margin="5">
 
-        <RadioButton FontFamily="Red"  x:Name="Rad1"  ControlTemplate="{StaticResource MUjahed}"/>
-        <Button  Clicked="Button_Clicked"/>
-        
-    </StackLayout>
+    <Grid>
+        <StackLayout Margin="5">
+           
+                <RadioButton  FontFamily="Username"  x:Name="Rad1"  ControlTemplate="{StaticResource TextBox}"/>
+            <RadioButton FontFamily="Password"    x:Name="Rad2" ControlTemplate="{StaticResource TextBox}"/>
+           
+            <Button  IsEnabled="false" Text="Scale"  Clicked="Button_Clicked">
+                <Button.Triggers>
+                    <MultiTrigger TargetType="Button">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding Source={x:Reference Rad1},
+                              Path=Content.Length,
+                              Converter={StaticResource MultiTriggerConverter}}"
+                          Value="true" />
+                            <BindingCondition Binding="{Binding Source={x:Reference Rad2},
+                              Path=Content.Length,
+                              Converter={StaticResource MultiTriggerConverter}}"
+                          Value="true" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsEnabled" Value="True" />
+                    </MultiTrigger>
+                </Button.Triggers>
+            </Button>
+            
+            <Button Text="Account"  Clicked="Button_Clicked_1"/>
+
+            <Picker >
+                <Picker.Items>
+                    <x:String>MUjahed  </x:String>
+                    <x:String>MUjahed</x:String>
+                    <x:String>MUjahed</x:String>
+                    <x:String>MUjahed</x:String>
+                    <x:String>MUjahed</x:String>
+                    <x:String>MUjahed</x:String>
+
+                </Picker.Items>
+            </Picker>
+
+            <Grid  Scale="0"   HeightRequest="200" VerticalOptions="Start" BackgroundColor="Red" x:Name="gridtest" IsVisible="false"/>
+        </StackLayout>
+
+
+
+       
+
+    </Grid>
+  
 
 </ContentPage>
