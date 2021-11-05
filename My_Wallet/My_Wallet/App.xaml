@@ -71,6 +71,51 @@
 
             </ControlTemplate>
 
+
+
+
+            <!--نموذج تكست بوكس جميل جدا-->
+            <ControlTemplate x:Key="ToggleButton" x:DataType="RadioButton">
+
+
+                <Frame BackgroundColor="White" Padding="0" CornerRadius="10">
+                    <Grid HeightRequest="{Binding Source={RelativeSource TemplatedParent}, Path=HeightRequest, UpdateSourceEventName=PropertyChanged}" WidthRequest="{Binding Source={RelativeSource TemplatedParent}, Path=WidthRequest, UpdateSourceEventName=PropertyChanged}">
+
+                        <RadioButton IsVisible="false" IsChecked="{Binding Source={RelativeSource TemplatedParent}, Path=IsChecked, UpdateSourceEventName=PropertyChanged}"
+                                                 x:Name="btn"
+                                                 >
+                            <RadioButton.Triggers>
+                                <Trigger TargetType="RadioButton" Property="IsChecked" Value="True">
+                                    <Setter Property="BackgroundColor" TargetName="MainGrid" Value="DodgerBlue" />
+                                    <Setter Property="TextColor" TargetName="Label" Value="White" />
+
+                                </Trigger>
+                              
+                            </RadioButton.Triggers>
+                        </RadioButton>
+
+
+                        <Grid x:Name="MainGrid"  >
+                            <Label x:Name="Label" FontSize="25" FontAttributes="Bold" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" Text="{Binding Source={RelativeSource TemplatedParent}, Path=Content, UpdateSourceEventName=PropertyChanged}" 
+                                       
+                                       />
+
+                        </Grid>
+
+                    </Grid>
+
+                </Frame>
+
+
+
+
+
+            </ControlTemplate>
+
+
+
+
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>
