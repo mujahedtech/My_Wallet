@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:Language="clr-namespace:My_Wallet.Language" 
              x:Class="My_Wallet.Views.ManageAccounts"
+              xmlns:Con="clr-namespace:My_Wallet.Convertors" 
              ControlTemplate="{StaticResource AccountTemplate}"
              FlowDirection="{Binding FlowDirectionlbl}"
              >
@@ -12,6 +13,8 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
+
+            <Con:LayoutAlignmentConverter x:Key="LayoutAlignmentConverter"/>
 
             <ControlTemplate x:Key="AccountTemplate" >
                 <Grid BindingContext="{Binding Source={RelativeSource TemplatedParent}}" RowSpacing="0">
@@ -25,14 +28,14 @@
 
 
                     <Grid Grid.Row="0"  BackgroundColor="{StaticResource HeaderBackColor}">
-                        <Label Style="{StaticResource HeaderLabel}"/>
+                        <Label Style="{StaticResource HeaderLabel}" Text="{Binding BindingContext.Headerlbl}"/>
                     </Grid>
                     <ContentPresenter Margin="0" Padding="0" Grid.Row="1"/>
 
 
 
-                    <Grid   FlowDirection="{Binding FlowDirectionlbl}" Grid.Row="2"  BackgroundColor="Red">
-                        <StackLayout Orientation="Horizontal"   Margin="10,0" VerticalOptions="FillAndExpand" HorizontalOptions="{Binding HorizontalOptionslbl}">
+                    <Grid   FlowDirection="{Binding BindingContext.FlowDirectionlbl}" Grid.Row="2"  BackgroundColor="Red">
+                        <StackLayout Orientation="Horizontal"   Margin="10,0" VerticalOptions="FillAndExpand" HorizontalOptions="{Binding BindingContext.HorizontalOptionslbl,Converter={StaticResource LayoutAlignmentConverter}}">
                             <ImageButton x:Name="btnNewAccount" Clicked="btnNewAccount_Clicked" BackgroundColor="Transparent" HeightRequest="50" WidthRequest="50" Source="NewAccount.png"/>
                         </StackLayout>
                     </Grid>
@@ -51,7 +54,7 @@
 
 
     <Grid >
-        <CollectionView Margin="0,5" x:Name="AccountList"  >
+        <CollectionView Margin="0,5" x:Name="AccountList" >
             <CollectionView.ItemsLayout>
                 <GridItemsLayout Orientation="Vertical"
                         Span="2" />
@@ -60,18 +63,38 @@
                 <DataTemplate>
                  
                             <SwipeView  >
-                                <SwipeView.LeftItems >
-                                   
-                                   
-                                    <SwipeItemView  x:Name="DeleteAccount" Invoked="DeleteAccount_Invoked" CommandParameter="{Binding .}">
-                                        <StackLayout Orientation="Horizontal" Spacing="10" >
-                                            <ImageButton BackgroundColor="Transparent" HeightRequest="50" WidthRequest="50" Source="DeleteAccount.png"   />
-                                            
-                                        </StackLayout>
-                                    </SwipeItemView>
+                                <SwipeView.LeftItems  >
+
+                            <SwipeItems Mode="Execute">
+                                <SwipeItemView   x:Name="DeleteAccount" Invoked="DeleteAccount_Invoked" CommandParameter="{Binding .}">
+                                    <StackLayout Orientation="Horizontal" Spacing="10" >
+                                        <Grid WidthRequest="10" HorizontalOptions="Start"/>
+                                        <Label Text="Delete Account" VerticalOptions="Center" FontSize="10"/>
+                                       
+                                        <ImageButton BackgroundColor="Transparent" HeightRequest="50" WidthRequest="50" Source="DeleteAccount.png"   />
+
+                                    </StackLayout>
+                                </SwipeItemView>
+                            </SwipeItems>
+                                  
                                 </SwipeView.LeftItems>
 
-                        <StackLayout  Orientation="Horizontal" Padding="10,30" Margin="2,2"  Spacing="10" BackgroundColor="{Binding AccountColor}">
+                        <SwipeView.RightItems  >
+
+                            <SwipeItems Mode="Execute">
+                                <SwipeItemView x:Name="btnPinForChart" Invoked="btnPinForChart_Invoked"  CommandParameter="{Binding .}">
+                                    <StackLayout Orientation="Horizontal" Spacing="10" >
+                                        <Grid WidthRequest="10" HorizontalOptions="Start"/>
+                                        <Label Text="Pin For Chart" VerticalOptions="Center" FontSize="10"/>
+                                        <ImageButton BackgroundColor="Transparent" HeightRequest="50" WidthRequest="50" Source="Colors.png"   />
+
+                                    </StackLayout>
+                                </SwipeItemView>
+                            </SwipeItems>
+
+                        </SwipeView.RightItems>
+
+                        <StackLayout   Orientation="Horizontal" Padding="10,30" Margin="2,2"  Spacing="10" BackgroundColor="{Binding AccountColor}">
                             <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_1" CommandParameter="{Binding .}"/>
                             </StackLayout.GestureRecognizers>
@@ -119,15 +142,15 @@
         <Frame IsVisible="false" x:Name="FrameNewAccount" BackgroundColor="White"  Margin="10" CornerRadius="10" CascadeInputTransparent="True" >
             <StackLayout>
                 <Grid x:Name="GridNewAccount">
-                    <RadioButton Content="{Binding AccountName}" FontFamily="{Binding AccountNamelbl}"  ControlTemplate="{StaticResource TextBox}"/>
+                    <RadioButton x:Name="txtAccount" Content="{Binding AccountName}" FontFamily="{Binding AccountNamelbl}"  ControlTemplate="{StaticResource TextBox}"/>
                 </Grid>
                
                 <StackLayout Orientation="Horizontal">
-                    <RadioButton x:Name="btnExpenseType" GroupName="1" HorizontalOptions="FillAndExpand" HeightRequest="50"  Content="{Binding Expenselbl}" ControlTemplate="{StaticResource ToggleButton}"/>
-                    <RadioButton x:Name="btnGroupType" GroupName="1" HorizontalOptions="FillAndExpand"  HeightRequest="50"  Content="{Binding Grouplbl}" ControlTemplate="{StaticResource ToggleButton}"/>
+                    <RadioButton  ClassId="1" CheckedChanged="RadioButton_CheckedChanged" x:Name="btnExpenseType" GroupName="1" HorizontalOptions="FillAndExpand" HeightRequest="50"  Content="{Binding Expenselbl}" ControlTemplate="{StaticResource ToggleButton}"/>
+                    <RadioButton CheckedChanged="RadioButton_CheckedChanged"  ClassId="2" x:Name="btnGroupType" GroupName="1" HorizontalOptions="FillAndExpand"  HeightRequest="50"  Content="{Binding Grouplbl}" ControlTemplate="{StaticResource ToggleButton}"/>
                 </StackLayout>
                 <StackLayout Orientation="Horizontal">
-                    <RadioButton  x:Name="btnStatementType" GroupName="1" HorizontalOptions="FillAndExpand" HeightRequest="50"  Content="{Binding AccountStatementlbl}" ControlTemplate="{StaticResource ToggleButton}"/>
+                    <RadioButton  CheckedChanged="RadioButton_CheckedChanged" ClassId="3"  x:Name="btnStatementType" GroupName="1" HorizontalOptions="FillAndExpand" HeightRequest="50"  Content="{Binding AccountStatementlbl}" ControlTemplate="{StaticResource ToggleButton}"/>
                   
                 </StackLayout>
 

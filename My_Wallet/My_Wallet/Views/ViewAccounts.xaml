@@ -1,0 +1,305 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:Con="clr-namespace:My_Wallet.Convertors" 
+             xmlns:Language="clr-namespace:My_Wallet.Language"
+             x:Class="My_Wallet.Views.ViewAccounts"
+             ControlTemplate="{x:DynamicResource ControlTemplate }"
+             >
+    
+
+
+
+    <ContentPage.Resources>
+        <Con:ShortDate x:Key="ShortDate"/>
+        <Con:NumberLanguage x:Key="NumberLanguage"/>
+        <Con:CurrencyConvertor x:Key="CurrencyConvertor"/>
+        <Con:LayoutAlignmentConverter x:Key="LayoutAlignmentConverter"/>
+        <Con:FlowDirection x:Key="FlowDirectionConvertor"/>
+
+
+        <ResourceDictionary>
+            <ControlTemplate x:Key="ControlTemplate" >
+                <Grid BindingContext="{Binding Source={RelativeSource TemplatedParent}}" RowSpacing="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+
+                        <RowDefinition Height="60"/>
+
+                    </Grid.RowDefinitions>
+
+
+                    <Grid Grid.Row="0"  BackgroundColor="{StaticResource HeaderBackColor}">
+                        <Label Style="{StaticResource HeaderLabel}" Text="{Binding BindingContext.ViewExpenseslbl}"/>
+                    </Grid>
+                    <ContentPresenter Margin="0" Padding="0" Grid.Row="1"/>
+
+
+
+                    <Grid   Grid.Row="2"  BackgroundColor="WhiteSmoke" FlowDirection="{Binding BindingContext.FlowDirectionlbl ,Converter={StaticResource FlowDirectionConvertor}}">
+                        <StackLayout Orientation="Horizontal"   Margin="10,0" VerticalOptions="FillAndExpand" HorizontalOptions="Start">
+                            <ImageButton x:Name="StartFilter" Clicked="StartFilter_Clicked"  BackgroundColor="Transparent" HeightRequest="50" WidthRequest="50" Source="Filter.png"/>
+                            <ImageButton x:Name="SummaryReport" Clicked="SummaryReport_Clicked"  BackgroundColor="Transparent" HeightRequest="50" WidthRequest="50" Source="Report.png"/>
+
+
+                            <ImageButton x:Name="MonthlyReport" Clicked="MonthlyReport_Clicked"  BackgroundColor="Transparent" HeightRequest="50" WidthRequest="50" Source="MonthlySummary.png"/>
+                            <ImageButton x:Name="btnSort" Clicked="btnSort_Clicked" HorizontalOptions="FillAndExpand"  BackgroundColor="Transparent" HeightRequest="50" WidthRequest="50" Source="Sort.png"/>
+
+                        </StackLayout>
+                    </Grid>
+
+
+
+                </Grid>
+            </ControlTemplate>
+
+        </ResourceDictionary>
+        
+    </ContentPage.Resources>
+
+    <ContentPage.BindingContext>
+        <Language:AccountManage />
+    </ContentPage.BindingContext>
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <CollectionView Margin="0,5" x:Name="TransactionList"  FlowDirection="{Binding FlowDirectionlbl ,Converter={StaticResource FlowDirectionConvertor}}">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical"
+                        Span="2" />
+            </CollectionView.ItemsLayout>
+
+           
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+
+                    <SwipeView  >
+                        <SwipeView.LeftItems  >
+
+                            <SwipeItems Mode="Execute">
+                                <SwipeItemView    CommandParameter="{Binding .}">
+                                    <StackLayout Orientation="Horizontal" Spacing="10" >
+                                        <Grid WidthRequest="10" HorizontalOptions="Start"/>
+                                        <Label Text="{Binding Notes}" VerticalOptions="Center" FontSize="10"/>
+
+
+                                        <Grid WidthRequest="20" HorizontalOptions="Start"/>
+
+                                    </StackLayout>
+                                </SwipeItemView>
+                            </SwipeItems>
+
+                        </SwipeView.LeftItems>
+
+                        <SwipeView.RightItems  >
+
+                            <SwipeItems Mode="Execute">
+                                <SwipeItemView    CommandParameter="{Binding .}">
+                                    <StackLayout Orientation="Horizontal" Spacing="10" >
+                                        <Grid WidthRequest="10" HorizontalOptions="Start"/>
+                                        <Label Text="Pick Color" VerticalOptions="Center" FontSize="10"/>
+                                        <ImageButton BackgroundColor="Transparent" HeightRequest="50" WidthRequest="50" Source="Colors.png"   />
+
+                                    </StackLayout>
+                                </SwipeItemView>
+                            </SwipeItems>
+
+                        </SwipeView.RightItems>
+
+                        <Grid HeightRequest="100"  BackgroundColor="White" >
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer CommandParameter="{Binding .}"/>
+                            </Grid.GestureRecognizers>
+
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="auto"/>
+                               
+
+
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition Height="1"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.RowSpan="2" BackgroundColor="{Binding AccountColor}"/>
+
+
+                            <Label Text="{Binding AccountName}" Grid.Column="1" Grid.ColumnSpan="2" TextColor="Black" FontSize="17"    HorizontalOptions="Start" VerticalOptions="Center"  />
+
+                            <Label Text="{Binding EnteredDate,Converter={StaticResource ShortDate}}" Margin="5" TextColor="{Binding AccountColor}" FontSize="15" FontAttributes="Bold" Grid.Column="1"   HorizontalTextAlignment="Center" VerticalTextAlignment="Start"  />
+
+                            <Label Text="{Binding IDTransaction,Converter={StaticResource NumberLanguage }}" Margin="5" TextColor="{Binding AccountColor}" FontSize="15" FontAttributes="Bold" Grid.Column="1"   HorizontalTextAlignment="Center" VerticalTextAlignment="End"  />
+
+
+                            <StackLayout Orientation="Horizontal" Spacing="0" Grid.Column="3">
+                                <Label Text="{Binding Amount,Converter={StaticResource NumberLanguage }}" TextColor="Black" FontSize="20"  FontAttributes="Bold"   HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  />
+
+
+                                <Label Text="{Binding Amount,Converter={StaticResource CurrencyConvertor }}"  TextColor="Black" FontSize="10"  Margin="5,0"   HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  />
+                            </StackLayout>
+                         
+
+
+
+
+
+                            <Grid BackgroundColor="Gray" Grid.Row="1" Grid.ColumnSpan="4"/>
+
+
+                        </Grid>
+
+                    </SwipeView>
+
+
+
+
+
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+
+
+
+
+
+        <Grid Grid.Row="1" BackgroundColor="White">
+            <Entry IsReadOnly="True" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" FontSize="20" TextColor="DodgerBlue" FontAttributes="Bold"  x:Name="lblSum"/>
+        </Grid>
+
+
+        <Frame FlowDirection="{Binding FlowDirectionlbl ,Converter={StaticResource FlowDirectionConvertor}}" Grid.RowSpan="2" BackgroundColor="White" CornerRadius="0" BorderColor="Black" Margin="0,80,0,0" Padding="0" x:Name="FrameFilter" VerticalOptions="End" HeightRequest="0">
+            <StackLayout Margin="10" FlowDirection="{Binding FlowDirectionlbl}">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer x:Name="CLoseFilterView" Tapped="CLoseFilterView_Tapped"/>
+                </StackLayout.GestureRecognizers>
+                <Grid HeightRequest="2" BackgroundColor="Black" Margin="50,0"/>
+
+                <Label HorizontalOptions="Center" Text="{Binding FilterArealbl}" FontSize="20" FontAttributes="Bold"/>
+                <Grid HeightRequest="1" BackgroundColor="Black" Margin="50,0"/>
+                <StackLayout Orientation="Horizontal">
+                    <Label x:Name="lblAccountName" TextColor="DodgerBlue" Text="{Binding AccountName}" Style="{StaticResource StanderdLabel}" HorizontalOptions="StartAndExpand"/>
+                    
+                    
+                    <Button ClassId="Account" Clicked="ClearFilter_Clicked" WidthRequest="30"  Text="X" TextColor="White" BackgroundColor="Red" HorizontalOptions="End"/>
+                    <Button x:Name="btnAccountSelect" Clicked="btnAccountSelect_Clicked" Text="{Binding SelectAccountlbl}" HorizontalOptions="End"/>
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label x:Name="lblMonthName" TextColor="DodgerBlue" Text="{Binding MonthName}" Style="{StaticResource StanderdLabel}" HorizontalOptions="StartAndExpand"/>
+
+
+                    <Button ClassId="Month" Clicked="ClearFilter_Clicked"  Text="X" WidthRequest="30"  TextColor="White" BackgroundColor="Red" HorizontalOptions="End"/>
+                    <Button x:Name="btnMonthSelect" Clicked="btnMonthSelect_Clicked"  Text="{Binding SelectMonthlbl}" HorizontalOptions="End"/>
+                </StackLayout>
+
+                <Label HorizontalOptions="Center" Text="{Binding SortArealbl}" FontSize="20" FontAttributes="Bold"/>
+                <Grid HeightRequest="1" BackgroundColor="Black" Margin="50,0"/>
+
+                <StackLayout Orientation="Horizontal" Spacing="5">
+                    <RadioButton ClassId="1" HorizontalOptions="FillAndExpand" Content="Account" ControlTemplate ="{StaticResource ToggleButton}"/>
+                    <RadioButton ClassId="2"  HorizontalOptions="FillAndExpand" Content="Month" ControlTemplate ="{StaticResource ToggleButton}"/>
+
+                </StackLayout>
+
+            </StackLayout>
+        </Frame>
+
+
+        <Frame  Grid.RowSpan="2" BackgroundColor="White" CornerRadius="0" BorderColor="Black" Margin="0,80,0,0" Padding="0" x:Name="FrameAccountSelector" VerticalOptions="End" HeightRequest="0">
+            <CollectionView Margin="0,5" x:Name="AccountListSelector"  >
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical"
+                        Span="2" />
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+
+
+                        <Grid BackgroundColor="White" Padding="2">
+                            <StackLayout  Orientation="Horizontal" Padding="10,30" Margin="2,2"  Spacing="10" BackgroundColor="{Binding AccountColor}">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer x:Name="AccountSelectedTap" Tapped="AccountSelectedTap_Tapped" CommandParameter="{Binding .}"/>
+                                </StackLayout.GestureRecognizers>
+
+
+
+                                <StackLayout>
+                                    <Label TextColor="White" Grid.Row="2"   FontSize="10" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Text="{Binding AccountID}"/>
+                                    <Label TextColor="White" Grid.Row="2" FontSize="10" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  Text="{Binding AccountType}"/>
+
+                                </StackLayout>
+                                <Grid BackgroundColor="White" WidthRequest="1" HorizontalOptions="Center"  />
+
+                                <Label TextColor="White" FontSize="20" Grid.Row="0"   HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  Text="{Binding AccountName}"/>
+
+
+                            </StackLayout>
+                        </Grid>
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </Frame>
+
+
+        <Frame  Grid.RowSpan="2" BackgroundColor="White" CornerRadius="0" BorderColor="Black" Margin="0,80,0,0" Padding="0" x:Name="FrameMonthSelector" VerticalOptions="End" HeightRequest="0">
+            <CollectionView Margin="0,5" x:Name="MonthListSelector"  >
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical"
+                        Span="3" />
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+
+
+                        <Grid HeightRequest="100" BackgroundColor="White" Padding="2">
+                            <Grid Padding="5" Margin="2,2"   BackgroundColor="DodgerBlue">
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer x:Name="MonthSelectedTap" Tapped="MonthSelectedTap_Tapped"  CommandParameter="{Binding .}"/>
+                                </Grid.GestureRecognizers>
+
+
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+
+
+                                <Label TextColor="White" FontAttributes="Bold"  FontSize="30" HorizontalOptions="Center" VerticalOptions="Center"  Text="{Binding MonthID}"/>
+
+
+                                <Grid Grid.Column="1" BackgroundColor="White" WidthRequest="1" HorizontalOptions="Center"  />
+
+                                <Label Grid.Column="2"  TextColor="White" FontSize="17"  HorizontalOptions="Center" VerticalOptions="Center"  Text="{Binding MonthName}"/>
+
+
+                            </Grid>
+                        </Grid>
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </Frame>
+
+    </Grid>
+
+</ContentPage>

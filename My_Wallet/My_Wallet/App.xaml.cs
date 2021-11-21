@@ -1,5 +1,7 @@
 ﻿using My_Wallet.CL;
 using System;
+using System.Globalization;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -11,16 +13,25 @@ namespace My_Wallet
         {
             InitializeComponent();
 
-            MainPage = new Views.ManageAccounts();
+            MainPage = new MainPage();
 
-            
 
+           
 
             Device.SetFlags(new[] { "Shapes_Experimental", "Brush_Experimental", "RadioButton_Experimental", "SwipeView_Experimental" });
 
             CL.PassingParameter._connection = Xamarin.Forms.DependencyService.Get<ISQLiteDb>().GetConnection();
 
             CreateTables();
+
+            bool LangSetting = new bool();
+
+            if (CL.DataValidation.IsBool(Preferences.Get(CL.PassingParameter.LangStr, string.Empty)))
+            {
+                LangSetting = bool.Parse(Preferences.Get(CL.PassingParameter.LangStr, string.Empty));
+                CL.PassingParameter.ArLanguage = LangSetting;
+
+            }
 
         }
 
@@ -29,8 +40,8 @@ namespace My_Wallet
 
 
 
-            //await CL.PassingParameter._connection.CreateTableAsync<Tables.UsersAccounts>();
-            //await CL.PassingParameter._connection.CreateTableAsync<Tables.DoctorInfo>();
+            await CL.PassingParameter._connection.CreateTableAsync<Tables.Accounts>();
+            await CL.PassingParameter._connection.CreateTableAsync<Tables.Transactions>();
 
             //await CL.PassingParameter._connection.CreateTableAsync<Tables.OrganizeDate>();
             //await CL.PassingParameter._connection.CreateTableAsync<Tables.PatientInfo>();
@@ -55,6 +66,7 @@ namespace My_Wallet
 
         protected override void OnResume()
         {
+           
         }
     }
 }

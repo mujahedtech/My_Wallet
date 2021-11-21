@@ -10,9 +10,16 @@ namespace My_Wallet.CL
     class ObjectConvertor 
     {
 
-        public static ObservableCollection<object> ConvertObservableCollection(System.Collections.IEnumerable original)
+        public static ObservableCollection<TableAccountView> ConvertAccountList(System.Collections.IEnumerable original)
         {
-            return new ObservableCollection<object>(original.Cast<object>());
+            return new ObservableCollection<TableAccountView>(original.Cast<TableAccountView>());
+        }
+
+
+
+        public static ObservableCollection<TransactionsViewModel> ConvertTransactionList(System.Collections.IEnumerable original)
+        {
+            return new ObservableCollection<TransactionsViewModel>(original.Cast<TransactionsViewModel>());
         }
 
     }

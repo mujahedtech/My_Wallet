@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="My_Wallet.Views.ServerManage"
+             xmlns:Con="clr-namespace:My_Wallet.Convertors" xmlns:Language="clr-namespace:My_Wallet.Language">
+    <ContentPage.BindingContext>
+        <Language:AccountManage />
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+
+        <Con:PercentConvert x:Key="PercentConvert"/>
+        <Con:ColorConvertor x:Key="ColorConvertor"/>
+        <Con:TextColorConvertor x:Key="TextColorConvertor"/>
+
+
+        <ResourceDictionary>
+          
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <StackLayout>
+        <Frame Style="{StaticResource FrameStyle}">
+            <StackLayout>
+                <Label Text="{Binding PathBackuplbl}"/>
+                <Label x:Name="lblRestoreLink" />
+                <Label Text="{Binding LastBackuplbl}"/>
+                <Label x:Name="lbllastBackup" />
+
+            </StackLayout>
+        </Frame>
+        <Button Clicked="btnUpload_Clicked" x:Name="btnUpload" Text="{Binding BackupDatabaselbl}" TextColor="{Binding Source={RelativeSource Self}, Path=BackgroundColor,Converter={StaticResource TextColorConvertor}}" BackgroundColor="{Binding Converter={StaticResource ColorConvertor}}"/>
+        <Frame Style="{StaticResource FrameStyle}">
+            <StackLayout>
+                <ProgressBar x:Name="progressBar" />
+
+                <Label >
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="%" FontAttributes="Bold"/>
+                            <Span Text="{Binding Source={x:Reference progressBar},Path=Progress,Converter={StaticResource PercentConvert}}" FontAttributes="Bold"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </StackLayout>
+        </Frame>
+
+
+
+
+
+        <Button Clicked="RestoreDB_Clicked" x:Name="RestoreDB" Text="{Binding Restoredatabaselbl}" TextColor="{Binding Source={RelativeSource Self}, Path=BackgroundColor,Converter={StaticResource TextColorConvertor}}" BackgroundColor="{Binding Converter={StaticResource ColorConvertor}}"/>
+        <Button Clicked="RestoreDBManual_Clicked" x:Name="RestoreDBManual" Text="{Binding EnterRestoreCodelbl}" TextColor="{Binding Source={RelativeSource Self}, Path=BackgroundColor,Converter={StaticResource TextColorConvertor}}" BackgroundColor="{Binding Converter={StaticResource ColorConvertor}}"/>
+    </StackLayout>
+</ContentPage>

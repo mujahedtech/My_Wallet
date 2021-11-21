@@ -2,60 +2,104 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="My_Wallet.MainPage"
-             
-             >
+             xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms" 
+             xmlns:Language="clr-namespace:My_Wallet.Language" xmlns:Con="clr-namespace:My_Wallet.Convertors">
 
-
+    <ContentPage.BindingContext>
+        <Language:AccountManage />
+    </ContentPage.BindingContext>
+    
+    
+    
     <ContentPage.Resources>
         <ResourceDictionary>
 
-           
+            <Con:ColorConvertor x:Key="ColorConvertor"/>
+            <Con:TextColorConvertor x:Key="TextColorConvertor"/>
 
 
-           
 
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <Grid>
         <StackLayout Margin="5">
-           
-                <RadioButton  FontFamily="Username"  x:Name="Rad1"  ControlTemplate="{StaticResource TextBox}"/>
-            <RadioButton FontFamily="Password"    x:Name="Rad2" ControlTemplate="{StaticResource TextBox}"/>
-           
-            <Button  IsEnabled="false" Text="Scale"  Clicked="Button_Clicked">
-                <Button.Triggers>
-                    <MultiTrigger TargetType="Button">
-                        <MultiTrigger.Conditions>
-                            <BindingCondition Binding="{Binding Source={x:Reference Rad1},
-                              Path=Content.Length,
-                              Converter={StaticResource MultiTriggerConverter}}"
-                          Value="true" />
-                            <BindingCondition Binding="{Binding Source={x:Reference Rad2},
-                              Path=Content.Length,
-                              Converter={StaticResource MultiTriggerConverter}}"
-                          Value="true" />
-                        </MultiTrigger.Conditions>
-                        <Setter Property="IsEnabled" Value="True" />
-                    </MultiTrigger>
-                </Button.Triggers>
-            </Button>
-            
-            <Button Text="Account"  Clicked="Button_Clicked_1"/>
 
-            <Picker >
-                <Picker.Items>
-                    <x:String>MUjahed  </x:String>
-                    <x:String>MUjahed</x:String>
-                    <x:String>MUjahed</x:String>
-                    <x:String>MUjahed</x:String>
-                    <x:String>MUjahed</x:String>
-                    <x:String>MUjahed</x:String>
+            <Frame x:Name="FrameHeader" Style="{StaticResource FrameStyle}">
+                <Label x:Name="lblPinAccountName" VerticalOptions="Center" HorizontalOptions="Center" FontSize="30" FontAttributes="Bold"/>
+            </Frame>
 
-                </Picker.Items>
-            </Picker>
 
-            <Grid  Scale="0"   HeightRequest="200" VerticalOptions="Start" BackgroundColor="Red" x:Name="gridtest" IsVisible="false"/>
+            <microcharts:ChartView VerticalOptions="FillAndExpand" x:Name="chartViewBar"  />
+
+
+            <Frame Padding="2">
+                <Button  HeightRequest="100"
+                         HorizontalOptions="FillAndExpand"
+                         TextColor="{Binding Source={RelativeSource Self}, Path=BackgroundColor,Converter={StaticResource TextColorConvertor}}"
+                         BackgroundColor="{Binding Converter={StaticResource ColorConvertor}}"
+                         Text="{Binding AccountReportlbl}"
+                         ClassId="3" 
+                         Clicked="MainButtonClick"
+                          x:Name="btnAccountReport"
+                         FontAttributes="Bold"
+                         />
+
+            </Frame>
+
+
+
+            <StackLayout HeightRequest="70" Orientation="Horizontal">
+                <Button TextColor="{Binding Source={RelativeSource Self}, Path=BackgroundColor,Converter={StaticResource TextColorConvertor}}"
+                        BackgroundColor="{Binding Converter={StaticResource ColorConvertor}}"
+                        Text="{Binding Accountslbl}"    
+                        ClassId="0" 
+                        Clicked="MainButtonClick"
+                        HorizontalOptions="FillAndExpand"
+                        x:Name="btnAccounts"
+                         FontAttributes="Bold"
+                        />
+                
+                
+                <Button HorizontalOptions="FillAndExpand"
+                        TextColor="{Binding Source={RelativeSource Self}, Path=BackgroundColor,Converter={StaticResource TextColorConvertor}}" 
+                        BackgroundColor="{Binding Converter={StaticResource ColorConvertor}}" 
+                        Text="{Binding Newexpenselbl}"
+                        ClassId="2"
+                        Clicked="MainButtonClick"
+                         x:Name="btnNewexpense"
+                         FontAttributes="Bold"
+                        />
+
+            </StackLayout>
+
+
+
+            <StackLayout HeightRequest="70" Orientation="Horizontal">
+                <Button HorizontalOptions="FillAndExpand"
+                        TextColor="{Binding Source={RelativeSource Self}, Path=BackgroundColor,Converter={StaticResource TextColorConvertor}}"
+                        BackgroundColor="{Binding Converter={StaticResource ColorConvertor}}"
+                        Text="{Binding DatabaseManagelbl}"      
+                        ClassId="4"
+                        Clicked="MainButtonClick"
+                         x:Name="btnDatabaseManage"
+                         FontAttributes="Bold"
+                        />
+             
+                
+                <Button HorizontalOptions="FillAndExpand"
+                        TextColor="{Binding Source={RelativeSource Self}, Path=BackgroundColor,Converter={StaticResource TextColorConvertor}}"
+                        BackgroundColor="{Binding Converter={StaticResource ColorConvertor}}"
+                        Text="{Binding Settingslbl}"   
+                        ClassId="1"
+                        Clicked="MainButtonClick"
+                         x:Name="btnSettings"
+                         FontAttributes="Bold"
+                        />
+
+            </StackLayout>
+
+
         </StackLayout>
 
 

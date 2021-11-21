@@ -1,49 +1,42 @@
-﻿using SQLite;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.Globalization;
 using System.Text;
-using System.Text.RegularExpressions;
+using Xamarin.Forms;
 
-namespace My_Wallet.CL
+namespace My_Wallet.Convertors
 {
-   public class PassingParameter
+    class ShortDate : IValueConverter
     {
-      public static string CreateRandomColor()
+        public object Convert(object value, Type targetType,
+            object parameter, CultureInfo culture)
         {
-            var random = new Random();
-            var color = String.Format("#{0:X6}", random.Next(0x1000000)); // = "#A197B9"
-
-            return color;
-        }
-
-        public static Color GetReadableForeColor(Color c)
-        {
-            return (((c.R + c.B + c.G) / 3) > 128) ? Color.Black : Color.White;
-        }
-
-        public static string PinHomeScreenID = "PinHomeScreenID";
-
-        public static string LangStr = "LangStr";
-        public static bool FirstLoad { get; set; } = true;
-        public static bool ArLanguage { get; set; } = true; 
-
-        static SQLiteAsyncConnection connection;
-        public static SQLiteAsyncConnection _connection
-        {
-            get
+            CultureInfo Lang = new CultureInfo("en-US");
+            if (CL.PassingParameter.ArLanguage==true)
             {
-                return connection;
+                Lang = new CultureInfo("ar-Jo");
             }
-            set
-            {
-                connection = value;
-            }
+
+
+            if (CL.DataValidation.IsDate(value.ToString()))
+                
+                return ConvertAr( DateTime.Parse(value.ToString()).ToString("MM/dd", Lang));
+
+
+            return "";
+            // input is empty
+        }
+
+        public object ConvertBack(object value, Type targetType,
+            object parameter, CultureInfo culture)
+        {
+            throw new NotSupportedException();
         }
 
 
 
-       public static string ConvertAr(string Numbers)
+
+        string ConvertAr(string Numbers)
         {
             string Indata = Numbers;
 
@@ -57,19 +50,17 @@ namespace My_Wallet.CL
             }
 
 
-            
 
-            return Regex.Replace(Indata, @"\s+", "") ;
 
+            return Indata;
+        
         }
-
-
-       static string NumberInAr(string Numbers)
+        string NumberInAr(string Numbers)
         {
             string Indata = Numbers;
 
 
-
+           
 
             switch (Indata)
             {
@@ -106,10 +97,8 @@ namespace My_Wallet.CL
 
             }
 
-            return Indata;
+            return Indata; 
 
         }
-
-
     }
 }

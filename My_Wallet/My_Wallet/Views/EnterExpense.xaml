@@ -1,9 +1,207 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="My_Wallet.Views.EnterExpense">
-   
-    
+             x:Class="My_Wallet.Views.EnterExpense"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             >
+
+
+    <Grid>
+            <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="300"/>
+
+        </Grid.RowDefinitions>
+
+        <SwipeView Grid.Row="0">
+            <SwipeView.LeftItems  >
+
+                <SwipeItems Mode="Execute">
+                    <SwipeItemView Invoked="DeleteAccount_Invoked"  x:Name="DeleteAccount" >
+                        <StackLayout Orientation="Horizontal" Spacing="10" >
+                            <Grid WidthRequest="10" HorizontalOptions="Start"/>
+                            <Label Text="View All Accounts" VerticalOptions="Center" FontSize="20"/>
+
+                            <ImageButton BackgroundColor="Transparent" Aspect="AspectFit" Source="ViewAccount.png"   />
+
+                        </StackLayout>
+                    </SwipeItemView>
+                </SwipeItems>
+
+            </SwipeView.LeftItems>
+
+
+            <CollectionView  Margin="0,5" x:Name="AccountList"  >
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical"
+                        Span="2" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+
+                            <Grid BackgroundColor="White" Padding="2">
+                                <StackLayout  Orientation="Horizontal" Padding="10,30"   Spacing="10" BackgroundColor="{Binding AccountColor}">
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"  CommandParameter="{Binding .}"/>
+                                    </StackLayout.GestureRecognizers>
+
+
+
+                                    <StackLayout>
+                                        <Label TextColor="White" Grid.Row="2"   FontSize="10" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Text="{Binding AccountID}"/>
+                                        <Label TextColor="White" Grid.Row="2" FontSize="10" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  Text="{Binding AccountType}"/>
+
+                                    </StackLayout>
+                                    <Grid BackgroundColor="White" WidthRequest="1" HorizontalOptions="Center"  />
+
+                                    <Label TextColor="White" FontSize="20" Grid.Row="0"   HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  Text="{Binding AccountName}"/>
+
+                                </StackLayout>
+
+                            </Grid>
+                       
+                      
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </SwipeView>
+
+  
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="5"/>
+                </Grid.ColumnDefinitions>
+
+
+            <Label VerticalTextAlignment="Center"  HorizontalTextAlignment="Center" Text="C" Grid.RowSpan="3" TextColor="White"  
+                               xct:TouchEffect.AnimationDuration="100"
+                               xct:TouchEffect.AnimationEasing="{x:Static Easing.CubicInOut}"
+                               xct:TouchEffect.PressedScale=".75"
+                               xct:TouchEffect.PressedOpacity=".6"
+                               xct:TouchEffect.PressedBackgroundColor="Gray"
+                               xct:TouchEffect.NormalBackgroundColor="Red"
+                
+                   xct:TouchEffect.LongPressCommand="{Binding TouchLong}"
+                   xct:TouchEffect.LongPressDuration="500"
+                   
+                   />
+
+
+            <Label FontSize="20" FontAttributes="Bold" TextColor="DarkRed" Text="Account Name" x:Name="txtAccount" Grid.Column="2"/>
+
+            <Label FontSize="20" FontAttributes="Bold" x:Name="txtAmount" Text="{Binding Amount}"  Grid.Row="2" Grid.Column="2"/>
+
+
+                <Image   Source="backspace.png" Grid.RowSpan="3" Grid.Column="3"   
+                               xct:TouchEffect.AnimationDuration="100"
+                               xct:TouchEffect.AnimationEasing="{x:Static Easing.CubicInOut}"
+                               xct:TouchEffect.PressedScale=".75"
+                               xct:TouchEffect.PressedOpacity=".6"
+                               
+                               xct:TouchEffect.NormalBackgroundColor="Transparent"
+                   xct:TouchEffect.Command="{Binding TouchCommand}"
+                
+                   
+                   />
+
+            </Grid>
+
+        <CollectionView VerticalOptions="End" Grid.Row="2" Margin="0,5" x:Name="NumPadList"  >
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical"
+                        Span="3" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+
+                    <Grid WidthRequest="70" HeightRequest="70">
+
+                        <Label Text="{Binding Header}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"
+                               
+                               xct:TouchEffect.AnimationDuration="100"
+                               xct:TouchEffect.AnimationEasing="{x:Static Easing.CubicInOut}"
+                               xct:TouchEffect.PressedScale=".75"
+                               xct:TouchEffect.PressedOpacity=".6"
+                               xct:TouchEffect.PressedBackgroundColor="#2196f3"
+                               xct:TouchEffect.NormalBackgroundColor="Transparent"
+                               
+                               
+                               
+                               >
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_1" CommandParameter="{Binding .}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Grid>
+
+
+
+
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+
+    </Grid>
+
+
+
+
+
+
+
+
+
+        <Grid IsVisible="{Binding Source={x:Reference FrameNotes},Path=IsVisible}" BackgroundColor="White">
+            <SwipeView VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" IsVisible="{Binding Source={x:Reference FrameNotes},Path=IsVisible}" BackgroundColor="White">
+                <SwipeView.LeftItems  >
+
+                    <SwipeItems Mode="Execute">
+                        <SwipeItemView x:Name="NameCloseNote"  Invoked="NameCloseNote_Invoked" >
+                            <StackLayout Orientation="Horizontal" Spacing="10" >
+                                <Grid WidthRequest="10" HorizontalOptions="Start"/>
+                                <Label Text="Save Transaction" VerticalOptions="Center" FontSize="20"/>
+
+                                <ImageButton BackgroundColor="Transparent" Aspect="AspectFit" Source="Save.png"   />
+
+                            </StackLayout>
+                        </SwipeItemView>
+                    </SwipeItems>
+
+                </SwipeView.LeftItems>
+                <Frame Padding="20" IsVisible="false" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="FrameNotes"  Margin="10" CornerRadius="10" CascadeInputTransparent="True" >
+
+
+
+                    <StackLayout Margin="10,0" VerticalOptions="Center" HorizontalOptions="Center">
+                        <RadioButton x:Name="txtNote" ControlTemplate="{StaticResource TextBox}" VerticalOptions="Center" FontFamily="Enter Notes"/>
+                        <DatePicker x:Name="txtSelectedDate"/>
+                    </StackLayout>
+
+
+                </Frame>
+            </SwipeView>
+
+        </Grid>
+
+       
+
+
+
+    </Grid>
+
     
     
     

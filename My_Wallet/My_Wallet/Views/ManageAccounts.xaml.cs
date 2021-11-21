@@ -4,28 +4,19 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Xamarin.CommunityToolkit.Extensions;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace My_Wallet.Views
 {
 
-    public class TableAccounts 
-    {
-
-        public string AccountID { get; set; }
-        public string AccountName { get; set; }
-        public int AccountType { get; set; }
-        public string AccountColor { get; set; }
-
-
-
-    }
+  
     public class TableAccountView
     {
 
-        public string AccountID { get; set; }
+        public int AccountID { get; set; }
         public string AccountName { get; set; }
         public string AccountType { get; set; }
         public string AccountColor { get; set; }
@@ -65,7 +56,47 @@ namespace My_Wallet.Views
 
             if (FrameNewAccount.IsVisible==true)
             {
+
+
+                var ItemSelected = tableAccountViews.Where(X => X.AccountName == SelectAccountName).FirstOrDefault();
+                if (ItemSelected != null)
+                {
+                    
+                       
+                    int IndexItem = tableAccountViews.IndexOf(tableAccountViews.Where(X => X.AccountID == GetIDAccountType()).FirstOrDefault());
+                    string  AccountTypeName= AccountsType.Where(i => i.TypeID == GetIDAccountType()).FirstOrDefault().TypeName;
+
+                    tableAccountViews[IndexItem].AccountType = AccountTypeName;
+
+                    tableAccountViews[IndexItem].AccountName = txtAccount.Content.ToString();
+
+
+                    CL.PassingParameter._connection.UpdateAsync(new Tables.Accounts { AccountID= ItemSelected .AccountID,AccountColor= ItemSelected .AccountColor,AccountName= txtAccount.Content.ToString(),AccountType= GetIDAccountType() });
+                    UserSelectAccountType = false;
+
+                }
+               else if(ItemSelected == null)
+                {
+                    string AccountName = txtAccount.Content.ToString();
+                    if (AccountName.Length>0 )
+                    {
+                        if (GetIDAccountType() != 0)
+                        {
+                            Tables.Accounts item = new Tables.Accounts { AccountColor = "Dodgerblue", AccountName = txtAccount.Content.ToString(), AccountType = GetIDAccountType() };
+
+                            TableAccountView itemview = new TableAccountView { AccountID = tableAccountViews.Count + 1, AccountColor = "Dodgerblue", AccountName = txtAccount.Content.ToString(), AccountType = AccountsType.Where(i => i.TypeID == GetIDAccountType()).FirstOrDefault().TypeName };
+
+                            tableAccountViews.Add(itemview);
+                            CL.PassingParameter._connection.InsertAsync(item);
+                        }
+                        
+                    }
+                   
+                }
+
                 CL.AnimationObject.EndAnimationFrame(FrameNewAccount);
+
+
             }
 
            
@@ -74,9 +105,34 @@ namespace My_Wallet.Views
             return Value;
         }
 
-        public ObservableCollection<TableAccounts> tableAccounts = new ObservableCollection<TableAccounts>();
+
+
+        int GetIDAccountType()
+        {
+            int Value = 0;
+            if (btnExpenseType.IsChecked)
+            {
+                Value = 1;
+            }
+            if (btnGroupType.IsChecked)
+            {
+                Value = 2;
+            }
+            if (btnStatementType.IsChecked)
+            {
+                Value = 3;
+            }
+
+            return Value;
+        }
+
+
+        public ObservableCollection<Tables.Accounts> tableAccounts = new ObservableCollection<Tables.Accounts>();
         public ObservableCollection<AccountType> AccountsType = new ObservableCollection<AccountType>();
-        protected override void OnAppearing()
+
+
+        ObservableCollection<TableAccountView> tableAccountViews = new ObservableCollection<TableAccountView>();
+        protected override async void OnAppearing()
         {
 
             #region Create table Type
@@ -89,64 +145,35 @@ namespace My_Wallet.Views
 
 
 
+            var Accounts = await CL.PassingParameter._connection.Table<Tables.Accounts>().ToListAsync();
+
+            var _UsersAccounts = new ObservableCollection<Tables.Accounts>(Accounts);
 
 
-          
 
 
-            #region Create Table Account
 
-            tableAccounts.Add(new TableAccounts { AccountID = "1", AccountType = 1, AccountColor = "#808000", AccountName = "car Supplies" });
-            tableAccounts.Add(new TableAccounts { AccountID = "2", AccountType = 1, AccountColor = "#008080", AccountName = "foods" });
-            tableAccounts.Add(new TableAccounts { AccountID = "3", AccountType = 1, AccountColor = "#008080", AccountName = "sweets" });
-            tableAccounts.Add(new TableAccounts { AccountID = "4", AccountType = 1, AccountColor = "#D3212D", AccountName = "Fuel" });
-            tableAccounts.Add(new TableAccounts { AccountID = "5", AccountType = 1, AccountColor = "#808080", AccountName = "Shawarma" });
-            tableAccounts.Add(new TableAccounts { AccountID = "6", AccountType = 1, AccountColor = "#2E5894", AccountName = "Citroen Loan" });
-            tableAccounts.Add(new TableAccounts { AccountID = "7", AccountType = 1, AccountColor = "#808000", AccountName = "Oil Engine Motor" });
-            tableAccounts.Add(new TableAccounts { AccountID = "8", AccountType = 1, AccountColor = "#808080", AccountName = "KFC" });
-            tableAccounts.Add(new TableAccounts { AccountID = "9", AccountType = 1, AccountColor = "#006A4E", AccountName = "Citroen Repair" });
-            tableAccounts.Add(new TableAccounts { AccountID = "10", AccountType = 1, AccountColor = "#808080", AccountName = "family" });
-            tableAccounts.Add(new TableAccounts { AccountID = "11", AccountType = 1, AccountColor = "#B0BF1A", AccountName = "Citroen Radiator" });
-            tableAccounts.Add(new TableAccounts { AccountID = "12", AccountType = 1, AccountColor = "#AB274F", AccountName = "fuel 95" });
-            tableAccounts.Add(new TableAccounts { AccountID = "13", AccountType = 1, AccountColor = "#808080", AccountName = "Sahar 600 Refund" });
-            tableAccounts.Add(new TableAccounts { AccountID = "14", AccountType = 1, AccountColor = "#008000", AccountName = "Eid Cash" });
-            tableAccounts.Add(new TableAccounts { AccountID = "15", AccountType = 1, AccountColor = "#007AA5", AccountName = "refill zain cash" });
-            tableAccounts.Add(new TableAccounts { AccountID = "16", AccountType = 1, AccountColor = "#008000", AccountName = "Cleaner Fuel" });
-            tableAccounts.Add(new TableAccounts { AccountID = "17", AccountType = 1, AccountColor = "#800000", AccountName = "Clothes" });
-            tableAccounts.Add(new TableAccounts { AccountID = "18", AccountType = 1, AccountColor = "#800000", AccountName = "petty cash" });
-            tableAccounts.Add(new TableAccounts { AccountID = "19", AccountType = 2, AccountColor = "#007FFF", AccountName = "Citroen Registration " });
-            tableAccounts.Add(new TableAccounts { AccountID = "20", AccountType = 2, AccountColor = "#008080", AccountName = "Hosaam Xaml", });
+            var results = (from table1 in _UsersAccounts.AsEnumerable()
+                           join table2 in AccountsType.AsEnumerable() on table1.AccountType equals table2.TypeID
+                           select new TableAccountView
+                           {
 
+                               AccountID = table1.AccountID,
+                               AccountName = table1.AccountName,
+                               AccountColor = table1.AccountColor,
+                               AccountType = table2.TypeName
+
+
+                           });
+
+
+
+            tableAccountViews = CL.ObjectConvertor.ConvertAccountList(results);
 
            
 
 
-
-            var results = (from table1 in tableAccounts.AsEnumerable()
-                          join table2 in AccountsType.AsEnumerable() on table1.AccountType equals table2.TypeID
-                          select new TableAccountView
-                          {
-
-                              AccountID= table1.AccountID,
-                              AccountName=table1.AccountName,
-                              AccountColor=table1.AccountColor,
-                              AccountType=table2.TypeName
-
-
-                          });
-
-
-
-            
-            
-
-            #endregion
-
-
-
-
-
-            AccountList.ItemsSource = CL.ObjectConvertor.ConvertObservableCollection(results);
+            AccountList.ItemsSource = tableAccountViews;
 
 
             base.OnAppearing();
@@ -161,32 +188,56 @@ namespace My_Wallet.Views
 
         private void RadioButton_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
-            //if (RadioButton1.IsChecked==true)
-            //{
-            //    RadioButton1.IsChecked = false;
-            //    DisplayAlert("654654", "545", "Ok");
-            //}
-            
+
+          
+            RadioButton image = (RadioButton)sender;
+
+            int AccountIndex = int.Parse(image.ClassId);
+           
+            if (UserSelectAccountType)
+            {
+                  UserSelectAccountType = true;
+                tableAccountViews[tableAccountViews.IndexOf(tableAccountViews.Where(X => X.AccountID == AccountIndex).FirstOrDefault())].AccountType
+                    =
+                    AccountsType.Where(i => i.TypeID == AccountIndex).FirstOrDefault().TypeName ;
+
+
+
+                CL.PassingParameter._connection.UpdateAsync(new Tables.Accounts { AccountID= tableAccountViews[tableAccountViews.IndexOf(tableAccountViews.Where(X => X.AccountID == AccountIndex).FirstOrDefault())].AccountID,AccountType= AccountIndex });
+                UserSelectAccountType = false;
+            }
+
+
+
         }
+
+        bool UserSelectAccountType;
 
         private void DeleteAccount_Invoked(object sender, EventArgs e)
         {
             var button = (SwipeItemView)sender;
-            var Check = button.CommandParameter as TableAccounts;
+            var Check = button.CommandParameter as Tables.Accounts;
 
         
-            tableAccounts.Remove(Check);
+            //tableAccounts.Remove(Check);
 
-            AccountList.ItemsSource = tableAccounts;
+            //AccountList.ItemsSource = tableAccounts;
         }
 
-        private  void btnNewAccount_Clicked(object sender, EventArgs e)
+        private void btnNewAccount_Clicked(object sender, EventArgs e)
         {
-           
+
+            UserSelectAccountType = false;
+
+            CL.AnimationObject.StartAnimationFrame(FrameNewAccount);
+
+            txtAccount.Content = "Empty";
+
 
         }
 
-        
+
+
         private void btnDelete_Clicked(object sender, EventArgs e)
         {
 
@@ -196,6 +247,8 @@ namespace My_Wallet.Views
            
         }
 
+
+        string SelectAccountName = "";
         private void TapGestureRecognizer_Tapped_1(object sender, EventArgs e)
         {
             var tapEventArgs = (TappedEventArgs)e;
@@ -209,7 +262,10 @@ namespace My_Wallet.Views
             
 
             var report = AccountsType.Where(i => i.TypeName == parameter.AccountType).ToList();
-          
+
+
+
+            SelectAccountName = parameter.AccountName;
 
             SelectAccountType(report.FirstOrDefault().TypeID);
         }
@@ -223,6 +279,8 @@ namespace My_Wallet.Views
             btnExpenseType.IsChecked = false;
             btnGroupType.IsChecked = false;
             btnStatementType.IsChecked = false;
+
+            UserSelectAccountType = false;
 
             switch (TypeID)
             {
@@ -243,7 +301,16 @@ namespace My_Wallet.Views
 
         }
 
+        private async void btnPinForChart_Invoked(object sender, EventArgs e)
+        {
+            var button = (SwipeItemView)sender;
+            var Check = button.CommandParameter as TableAccountView;
 
-        
+            Preferences.Set(CL.PassingParameter.PinHomeScreenID, Check.AccountID.ToString());
+
+            Xamarin.Forms.Application.Current.MainPage = new MainPage();
+
+
+        }
     }
 }

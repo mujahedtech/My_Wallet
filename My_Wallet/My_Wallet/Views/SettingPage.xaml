@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="My_Wallet.Views.SettingPage">
+    <StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <RadioButton WidthRequest="100" HeightRequest="100" x:Name="ArLang" ClassId="1" CheckedChanged="LanguagesChanged" Content="Ar" ControlTemplate ="{StaticResource ToggleButton}"/>
+            <RadioButton WidthRequest="100" HeightRequest="100" x:Name="EnLang"  ClassId="2" CheckedChanged="LanguagesChanged" Content="En" ControlTemplate ="{StaticResource ToggleButton}"/>
+        </StackLayout>
+
+        <Frame Style="{StaticResource FrameStyle}">
+            <Label FontSize="20" VerticalOptions="FillAndExpand" x:Name="txtNote"/>
+
+        </Frame>
+
+
+    </StackLayout>
+</ContentPage>
