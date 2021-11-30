@@ -111,7 +111,7 @@ namespace My_Wallet
 
 
             //chartViewBar.Chart = new DonutChart { Entries = entries, ValueLabelOrientation = Orientation.Horizontal, LabelTextSize = 30 };
-            chartViewBar.Chart = new BarChart { Entries = entries, LabelTextSize = 30, ValueLabelOrientation = Orientation.Horizontal, LabelOrientation = Orientation.Horizontal};
+            chartViewBar.Chart = new LineChart { Entries = entries, LabelTextSize = 30, ValueLabelOrientation = Orientation.Horizontal, LabelOrientation = Orientation.Horizontal};
             //chartViewBar.Chart = new RadialGaugeChart { Entries = entries, LabelTextSize = 30,  };
 
         }
@@ -125,14 +125,15 @@ namespace My_Wallet
 
             CreateFuelReport();
 
-            StartAnimation(btnAccountReport);
-            StartAnimation(btnAccounts);
-            StartAnimation(btnDatabaseManage);
-            StartAnimation(btnNewexpense);
-            StartAnimation(btnSettings);
+            StartAnimationButton(btnAccountReport, "D");
+            StartAnimationButton(btnAccounts,"L");
+            StartAnimationButton(btnDatabaseManage, "L");
+            StartAnimationButton(btnNewexpense, "R");
+            StartAnimationButton(btnSettings, "R");
 
 
-            StartAnimationFrame(FrameHeader);
+            //StartAnimationFrame(lblPinAccountName);
+            //StartAnimati/*o*/nButton(btnAccountReport);
 
 
             //StartAnimationChart();
@@ -185,36 +186,80 @@ namespace My_Wallet
 
 
                 await button.FadeTo(.7, 1000);
-
-               
-
                 await button.FadeTo(1, 1000);
 
               
 
                 button.RotationX = 0;
-
+                 
 
             }
         }
 
-        private async void StartAnimationFrame(Frame button)
+        private async void StartAnimationFrame(Label button)
         {
             while (true)
             {
 
                 await Task.Delay(10000);
 
-                uint timeout = 2000;
+                //uint timeout = 2000;
 
-                button.RotationY = 0;
+                //button.RotationY = 0;
 
-                await button.RotateYTo(-360, timeout, Easing.Linear);
+                //await button.RotateYTo(-360, timeout, Easing.Linear);
 
-                button.RotationY = 0;
+                //button.RotationY = 0;
+
+                await button.ScaleTo(1.5, 1000, Easing.Linear);
+                await button.ScaleTo(1, 1000, Easing.Linear);
 
 
             }
+        }
+
+        private async void StartAnimationButton(Button button,string Direction)
+        {
+            //while (true)
+            //{
+            //    int timeout = 10000;
+            //    uint During = 1000;
+
+            //    if (Direction=="R")
+            //    {
+            //        await Task.Delay(timeout);
+
+            //        await button.FadeTo(.7, 1000);
+            //        await button.FadeTo(1, 1000);
+
+            //        await button.TranslateTo(100, 0, During, Easing.BounceOut);
+            //        await button.TranslateTo(0, 0);
+            //    }
+            //    if (Direction == "L")
+            //    {
+            //        await Task.Delay(timeout);
+
+            //        await button.FadeTo(.7, 1000);
+            //        await button.FadeTo(1, 1000);
+
+            //        await button.TranslateTo(-100, 0, During, Easing.BounceOut);
+            //        await button.TranslateTo(0, 0);
+            //    }
+            //    if (Direction == "D")
+            //    {
+            //        await Task.Delay(timeout);
+
+            //        await button.FadeTo(.7, 1000);
+            //        await button.FadeTo(1, 1000);
+
+            //        await button.TranslateTo(0, 100, During, Easing.BounceOut);
+            //        await button.TranslateTo(0, 0);
+            //    }
+
+
+
+
+            //}
         }
 
 

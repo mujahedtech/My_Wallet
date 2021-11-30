@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using My_Wallet.Views;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -9,7 +10,11 @@ namespace My_Wallet.CL
 {
    public class PassingParameter
     {
-      public static string CreateRandomColor()
+
+       public static List<TransactionsViewModel> MonthSummaryList { get; set;  }
+
+
+        public static string CreateRandomColor()
         {
             var random = new Random();
             var color = String.Format("#{0:X6}", random.Next(0x1000000)); // = "#A197B9"

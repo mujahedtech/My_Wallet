@@ -6,6 +6,7 @@
               xmlns:Con="clr-namespace:My_Wallet.Convertors" 
              ControlTemplate="{StaticResource AccountTemplate}"
              FlowDirection="{Binding FlowDirectionlbl}"
+            
              >
     <ContentPage.BindingContext>
         <Language:AccountManage />

@@ -5,6 +5,8 @@
              xmlns:Language="clr-namespace:My_Wallet.Language"
              x:Class="My_Wallet.Views.ViewAccounts"
              ControlTemplate="{x:DynamicResource ControlTemplate }"
+               xmlns:xct="http://xamarin.com/schemas/2020/toolkit" 
+             xmlns:VM="clr-namespace:My_Wallet.ViewModel"
              >
     
 
@@ -38,13 +40,35 @@
 
 
                     <Grid   Grid.Row="2"  BackgroundColor="WhiteSmoke" FlowDirection="{Binding BindingContext.FlowDirectionlbl ,Converter={StaticResource FlowDirectionConvertor}}">
-                        <StackLayout Orientation="Horizontal"   Margin="10,0" VerticalOptions="FillAndExpand" HorizontalOptions="Start">
-                            <ImageButton x:Name="StartFilter" Clicked="StartFilter_Clicked"  BackgroundColor="Transparent" HeightRequest="50" WidthRequest="50" Source="Filter.png"/>
-                            <ImageButton x:Name="SummaryReport" Clicked="SummaryReport_Clicked"  BackgroundColor="Transparent" HeightRequest="50" WidthRequest="50" Source="Report.png"/>
+                        <StackLayout Orientation="Horizontal"   Margin="10,0" VerticalOptions="FillAndExpand" HorizontalOptions="Start" Spacing="5">
+                            <ImageButton xct:TouchEffect.PressedScale=".80" xct:TouchEffect.AnimationDuration="50" x:Name="StartFilter" Clicked="StartFilter_Clicked"  BackgroundColor="Transparent" HeightRequest="50" WidthRequest="50" Source="Filter.png"/>
+                            <ImageButton xct:TouchEffect.PressedScale=".80" xct:TouchEffect.AnimationDuration="50" x:Name="SummaryReport" Clicked="SummaryReport_Clicked"  BackgroundColor="Transparent" HeightRequest="50" WidthRequest="50" Source="Report.png"/>
 
 
-                            <ImageButton x:Name="MonthlyReport" Clicked="MonthlyReport_Clicked"  BackgroundColor="Transparent" HeightRequest="50" WidthRequest="50" Source="MonthlySummary.png"/>
-                            <ImageButton x:Name="btnSort" Clicked="btnSort_Clicked" HorizontalOptions="FillAndExpand"  BackgroundColor="Transparent" HeightRequest="50" WidthRequest="50" Source="Sort.png"/>
+                            <ImageButton xct:TouchEffect.PressedScale=".80"
+                                         xct:TouchEffect.AnimationDuration="50"
+                                         xct:TouchEffect.LongPressCommand="{Binding TouchLong}"
+                                         xct:TouchEffect.LongPressDuration="500"
+                                         x:Name="MonthlyReport"
+                                         Clicked="MonthlyReport_Clicked"
+                                         BackgroundColor="Transparent"
+                                         HeightRequest="50" WidthRequest="50" 
+                                         Source="MonthlySummary.png" >
+                                <ImageButton.BindingContext>
+                                    <VM:Commands/>
+                                </ImageButton.BindingContext>
+                            </ImageButton>
+                            <ImageButton xct:TouchEffect.PressedScale=".80" xct:TouchEffect.AnimationDuration="50" x:Name="btnSort" Clicked="btnSort_Clicked" HorizontalOptions="FillAndExpand"  BackgroundColor="Transparent" HeightRequest="50" WidthRequest="50" Source="Sort.png"/>
+                            <ImageButton Margin="10,0" x:Name="btnLayout"
+                                         Clicked="btnLayout_Clicked" 
+                                         HorizontalOptions="FillAndExpand"  BackgroundColor="Transparent"
+                                         HeightRequest="40" WidthRequest="40" Source="Layout.png"
+                                         xct:TouchEffect.PressedScale=".80"
+                                        
+                                         xct:TouchEffect.AnimationDuration="50"
+                                         xct:TouchEffect.AnimationEasing="{x:Static Easing.CubicInOut}"
+                                         />
+
 
                         </StackLayout>
                     </Grid>
@@ -100,11 +124,11 @@
                         <SwipeView.RightItems  >
 
                             <SwipeItems Mode="Execute">
-                                <SwipeItemView    CommandParameter="{Binding .}">
+                                <SwipeItemView  Invoked="SwipeItemView_Invoked"  CommandParameter="{Binding .}">
                                     <StackLayout Orientation="Horizontal" Spacing="10" >
                                         <Grid WidthRequest="10" HorizontalOptions="Start"/>
-                                        <Label Text="Pick Color" VerticalOptions="Center" FontSize="10"/>
-                                        <ImageButton BackgroundColor="Transparent" HeightRequest="50" WidthRequest="50" Source="Colors.png"   />
+                                        <Label Text="Remove" VerticalOptions="Center" FontSize="10"/>
+                                        <ImageButton BackgroundColor="Transparent" HeightRequest="50" WidthRequest="50" Source="DeleteAccount.png"   />
 
                                     </StackLayout>
                                 </SwipeItemView>
@@ -129,25 +153,52 @@
                             </Grid.ColumnDefinitions>
 
                             <Grid.RowDefinitions>
-                                <RowDefinition/>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
                                 <RowDefinition Height="1"/>
                             </Grid.RowDefinitions>
 
-                            <Grid Grid.RowSpan="2" BackgroundColor="{Binding AccountColor}"/>
+                            <Grid Grid.RowSpan="4" BackgroundColor="{Binding AccountColor}"/>
 
 
-                            <Label Text="{Binding AccountName}" Grid.Column="1" Grid.ColumnSpan="2" TextColor="Black" FontSize="17"    HorizontalOptions="Start" VerticalOptions="Center"  />
+                            
 
-                            <Label Text="{Binding EnteredDate,Converter={StaticResource ShortDate}}" Margin="5" TextColor="{Binding AccountColor}" FontSize="15" FontAttributes="Bold" Grid.Column="1"   HorizontalTextAlignment="Center" VerticalTextAlignment="Start"  />
+                            <Label
+                                Text="{Binding EnteredDate,Converter={StaticResource ShortDate}}"
+                                Grid.Column="1" Grid.Row="0"
+                                Margin="5"
+                                TextColor="{Binding AccountColor}" 
+                                FontSize="12" FontAttributes="Bold"  
+                                HorizontalTextAlignment="Center" VerticalTextAlignment="Start"  />
 
-                            <Label Text="{Binding IDTransaction,Converter={StaticResource NumberLanguage }}" Margin="5" TextColor="{Binding AccountColor}" FontSize="15" FontAttributes="Bold" Grid.Column="1"   HorizontalTextAlignment="Center" VerticalTextAlignment="End"  />
+
+                            <Label 
+                                Text="{Binding AccountName}"
+                                Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3"
+                                TextColor="Black"
+                                FontSize="17"   
+                                HorizontalOptions="Start" VerticalOptions="Center"  />
 
 
-                            <StackLayout Orientation="Horizontal" Spacing="0" Grid.Column="3">
-                                <Label Text="{Binding Amount,Converter={StaticResource NumberLanguage }}" TextColor="Black" FontSize="20"  FontAttributes="Bold"   HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  />
+
+                            <Label Text="{Binding IDTransaction,Converter={StaticResource NumberLanguage }}" 
+                                   Grid.Column="1" Grid.Row="2"
+                                   Margin="5" 
+                                   TextColor="{Binding AccountColor}" 
+                                   FontSize="15" FontAttributes="Bold"   
+                                   HorizontalTextAlignment="Center" VerticalTextAlignment="End"  />
 
 
-                                <Label Text="{Binding Amount,Converter={StaticResource CurrencyConvertor }}"  TextColor="Black" FontSize="10"  Margin="5,0"   HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  />
+                            <StackLayout Orientation="Horizontal" Spacing="0" Grid.Column="3" Grid.Row="2">
+                                <Label Text="{Binding Amount,Converter={StaticResource NumberLanguage }}" 
+                                       TextColor="Black" FontSize="20"  FontAttributes="Bold"  
+                                       HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  />
+
+
+                                <Label Text="{Binding Amount,Converter={StaticResource CurrencyConvertor }}"  
+                                       TextColor="Black" FontSize="10"  Margin="5,0"  
+                                       HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  />
                             </StackLayout>
                          
 
@@ -155,7 +206,7 @@
 
 
 
-                            <Grid BackgroundColor="Gray" Grid.Row="1" Grid.ColumnSpan="4"/>
+                            <Grid BackgroundColor="Gray" Grid.Row="3" Grid.ColumnSpan="4"/>
 
 
                         </Grid>
@@ -209,8 +260,8 @@
                 <Grid HeightRequest="1" BackgroundColor="Black" Margin="50,0"/>
 
                 <StackLayout Orientation="Horizontal" Spacing="5">
-                    <RadioButton ClassId="1" HorizontalOptions="FillAndExpand" Content="Account" ControlTemplate ="{StaticResource ToggleButton}"/>
-                    <RadioButton ClassId="2"  HorizontalOptions="FillAndExpand" Content="Month" ControlTemplate ="{StaticResource ToggleButton}"/>
+                    <RadioButton HeightRequest="50" x:Name="SortAmount" ClassId="1" HorizontalOptions="FillAndExpand" Content="Amount" ControlTemplate ="{StaticResource ToggleButton}"/>
+                    <RadioButton HeightRequest="50" x:Name="SortDate" IsChecked="True" ClassId="2"  HorizontalOptions="FillAndExpand" Content="Date" ControlTemplate ="{StaticResource ToggleButton}"/>
 
                 </StackLayout>
 

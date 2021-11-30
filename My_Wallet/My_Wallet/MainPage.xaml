@@ -43,6 +43,7 @@
                          Clicked="MainButtonClick"
                           x:Name="btnAccountReport"
                          FontAttributes="Bold"
+                        FontSize="30"
                          />
 
             </Frame>
@@ -58,6 +59,7 @@
                         HorizontalOptions="FillAndExpand"
                         x:Name="btnAccounts"
                          FontAttributes="Bold"
+                        FontSize="20"
                         />
                 
                 
@@ -69,6 +71,7 @@
                         Clicked="MainButtonClick"
                          x:Name="btnNewexpense"
                          FontAttributes="Bold"
+                        FontSize="20"
                         />
 
             </StackLayout>
@@ -84,6 +87,7 @@
                         Clicked="MainButtonClick"
                          x:Name="btnDatabaseManage"
                          FontAttributes="Bold"
+                        FontSize="20"
                         />
              
                 
@@ -93,8 +97,9 @@
                         Text="{Binding Settingslbl}"   
                         ClassId="1"
                         Clicked="MainButtonClick"
-                         x:Name="btnSettings"
-                         FontAttributes="Bold"
+                        x:Name="btnSettings"
+                        FontAttributes="Bold"
+                        FontSize="20"
                         />
 
             </StackLayout>

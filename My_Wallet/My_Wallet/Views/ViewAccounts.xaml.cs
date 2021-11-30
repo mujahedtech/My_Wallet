@@ -12,7 +12,7 @@ using Xamarin.Forms.Xaml;
 
 namespace My_Wallet.Views
 {
-    class TransactionsViewModel
+   public class TransactionsViewModel
     {
         public int IDTransaction { get; set; }
         public string AccountName { get; set; }
@@ -24,7 +24,7 @@ namespace My_Wallet.Views
 
         public string AccountColor { get; set; }
 
-
+        public int AccountType { get; set; }
 
     }
 
@@ -110,8 +110,9 @@ namespace My_Wallet.Views
                                Amount= table1.Amount,
                                Notes= table1.Notes,
                                AccountName=table2.AccountName,
-                               AccountColor=table2.AccountColor
-                               
+                               AccountColor=table2.AccountColor,
+                               AccountType= table2.AccountType
+
 
                            });
 
@@ -124,8 +125,8 @@ namespace My_Wallet.Views
 
             TransactionList.ItemsSource = TransactionsViewModels;
 
+           
 
-            
 
             #endregion
 
@@ -196,6 +197,9 @@ namespace My_Wallet.Views
 
 
             #endregion
+
+
+            CL.PassingParameter.MonthSummaryList = null;
 
 
             base.OnAppearing();
@@ -277,6 +281,8 @@ namespace My_Wallet.Views
 
             CL.AnimationObject.AnimationHeightFrame(FrameFilter);
 
+          
+
 
         }
 
@@ -345,13 +351,33 @@ namespace My_Wallet.Views
             {
                 Asc = false;
                 await btnSort.RotateTo(180, 500);
-                filter = filter.OrderByDescending(i => i.EnteredDate).ToList();
+                if (SortDate.IsChecked)
+                {
+                    filter = filter.OrderByDescending(i => i.EnteredDate).ToList();
+                   
+                }
+                else if (SortAmount.IsChecked)
+                {
+                    filter = filter.OrderByDescending(i => i.Amount).ToList();
+                }
+                   
+                
 
             }
             else if (Asc == false)
             {
-                filter = filter.OrderBy(i => i.EnteredDate).ToList();
-               
+                if (SortDate.IsChecked)
+                {
+                    filter = filter.OrderBy(i => i.EnteredDate).ToList(); 
+                   
+                }
+               else if (SortAmount.IsChecked)
+                {
+                    filter = filter.OrderBy(i => i.Amount).ToList();
+
+                }
+
+
                 Asc = true;
                 await btnSort.RotateTo(0, 500);
             }
@@ -360,21 +386,54 @@ namespace My_Wallet.Views
             TransactionList.ItemsSource = CL.ObjectConvertor.ConvertTransactionList(filter);
         }
 
+
+
+
+       IEnumerable<TransactionsViewModel> SummaryList ;
         private void SummaryReport_Clicked(object sender, EventArgs e)
         {
-          var list=  filter.GroupBy(i => i.AccountName)
+           
+
+           
+           
+
+             SummaryList =  filter.GroupBy(i => i.AccountName)
                                        .Select(g => new TransactionsViewModel
                                        {
+
                                            AccountName=g.Key,
-                                           EnteredDate = g.FirstOrDefault().EnteredDate,
                                            AccountColor= g.FirstOrDefault().AccountColor,
-                                           IDTransaction= g.FirstOrDefault().IDTransaction,
-                                           Notes= g.FirstOrDefault().Notes,
-                                           Amount = g.Select(l => l.Amount).Distinct().Sum()
+                                           Amount = g.Select(l => l.Amount).Sum()
                                        });
 
 
-            TransactionList.ItemsSource = CL.ObjectConvertor.ConvertTransactionList(list);
+            if (SortAmount.IsChecked)
+            {
+                if (Asc)
+                {
+
+                    SummaryList = SummaryList.OrderBy(i => i.Amount).ToList();
+
+                }
+                else if (Asc == false)
+                {
+
+                    SummaryList = SummaryList.OrderByDescending(i => i.Amount).ToList();
+
+                }
+
+            }
+
+
+
+
+            TransactionList.ItemsSource = CL.ObjectConvertor.ConvertTransactionList(SummaryList);
+
+            EmplementSum(CL.ObjectConvertor.ConvertTransactionList(SummaryList).Sum(i => i.Amount));
+
+            SummaryListIn = SummaryList;
+
+           
         }
 
         private void ClearFilter_Clicked(object sender, EventArgs e)
@@ -403,11 +462,79 @@ namespace My_Wallet.Views
                 Lang = new CultureInfo("ar-Jo");
             }
 
-            var q = from i in filter
+            var filterJustExpenses = filter.Where(i => i.AccountType == 1).ToList();
+
+            var q = from i in filterJustExpenses
                     group i by i.EnteredDate.ToString("MMMM", Lang) into grp
                     select new TransactionsViewModel { AccountName = grp.Key,AccountColor= grp.FirstOrDefault().AccountColor, Amount =double.Parse( grp.Sum(i => i.Amount).ToString("0").Replace(" ","")) };
 
+            var ReportChart = from i in filterJustExpenses
+                              group i by i.EnteredDate.ToString("MM", Lang) into grp
+                    select new TransactionsViewModel { AccountName = grp.Key, AccountColor = grp.FirstOrDefault().AccountColor, Amount = double.Parse(grp.Sum(i => i.Amount).ToString("0").Replace(" ", "")) };
+
+
+            CL.PassingParameter.MonthSummaryList = ReportChart.ToList();
+
+
             TransactionList.ItemsSource = CL.ObjectConvertor.ConvertTransactionList(q);
+
+            EmplementSum(CL.ObjectConvertor.ConvertTransactionList(q).Sum(i => i.Amount));
+
+           
+
+        }
+
+
+
+        void ChangeSpanLayout(int SpanNumber)
+        {
+
+            var grid = new GridItemsLayout(ItemsLayoutOrientation.Vertical)
+            {
+                Span = SpanNumber,
+            };
+            TransactionList.SetValue(CollectionView.ItemsLayoutProperty, grid);
+           
+        }
+
+
+        int SpanNumber = 1;
+        private void btnLayout_Clicked(object sender, EventArgs e)
+        {
+            if (SpanNumber > 0)
+            {
+               
+                ChangeSpanLayout(SpanNumber);
+                if (SpanNumber >= 3)
+                {
+                    SpanNumber = 1;
+                    return;
+                }
+
+
+                SpanNumber++;
+
+            }
+        }
+
+        IEnumerable<TransactionsViewModel> SummaryListIn;
+        private void SwipeItemView_Invoked(object sender, EventArgs e)
+        {
+            var button = (SwipeItemView)sender;
+            var Check = button.CommandParameter as TransactionsViewModel;
+
+            if (SummaryListIn!=null)
+            {
+                SummaryListIn = SummaryListIn.Where(i => i.AccountName != Check.AccountName);
+
+                TransactionList.ItemsSource = CL.ObjectConvertor.ConvertTransactionList(SummaryListIn);
+
+                EmplementSum(CL.ObjectConvertor.ConvertTransactionList(SummaryListIn).Sum(i => i.Amount));
+
+               
+            }
+
+           
         }
     }
 }

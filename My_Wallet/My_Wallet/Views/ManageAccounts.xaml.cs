@@ -39,9 +39,16 @@ namespace My_Wallet.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ManageAccounts : ContentPage
     {
+
+        
         public ManageAccounts()
         {
             InitializeComponent();
+
+           
+
+            //BindingContext = this;
+
         }
 
 
