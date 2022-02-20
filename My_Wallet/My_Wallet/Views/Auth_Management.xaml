@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView" xmlns:xct="http://xamarin.com/schemas/2020/toolkit" xmlns:Con="clr-namespace:My_Wallet.Convertors"
+             x:Class="My_Wallet.Views.Auth_Management">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <Con:ColorConvertor x:Key="ColorConvertor"/>
+            <Con:TextColorConvertor x:Key="TextColorConvertor"/>
+
+
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Frame Style="{StaticResource FrameStyle}" Padding="3">
+        <StackLayout>
+
+            <StackLayout>
+                <RadioButton HeightRequest="120" VerticalOptions="Start" x:Name="txtOrder" FontFamily="Order type" ControlTemplate="{StaticResource TextBox}"/>
+
+
+                <StackLayout Orientation="Horizontal">
+                    <Button  FontSize="20" TextColor="{Binding Source={RelativeSource Self}, Path=BackgroundColor,Converter={StaticResource TextColorConvertor}}"
+                                BackgroundColor="{Binding Converter={StaticResource ColorConvertor}}"
+                                Text="Create Order" x:Name="btnOrders" Clicked="btnOrders_Clicked"/>
+
+
+
+                    <Grid WidthRequest="5"/>
+                    <Button  FontSize="20" TextColor="{Binding Source={RelativeSource Self}, Path=BackgroundColor,Converter={StaticResource TextColorConvertor}}"
+                                BackgroundColor="{Binding Converter={StaticResource ColorConvertor}}"
+                                Text="Open Auth" x:Name="btnOpenAuth" Clicked="btnOpenAuth_Clicked"/>
+                </StackLayout>
+
+
+
+            </StackLayout>
+
+            <!--<xct:Expander >
+                   
+                </xct:Expander>-->
+
+            <Grid HeightRequest="5"/>
+
+            <CollectionView ItemsSource="{Binding OrdersList}"  >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="5">
+                            <pv:PancakeView Padding="10" CornerRadius="0,10,0,10"   BackgroundColor="White" VerticalOptions="StartAndExpand" 
+                                    HorizontalOptions="FillAndExpand">
+                                <pv:PancakeView.Border>
+                                    <pv:Border Thickness="6">
+                                        <pv:Border.GradientStops>
+                                            <pv:GradientStopCollection>
+                                                <pv:GradientStop Color="Red" Offset="0"/>
+                                                <pv:GradientStop Color="Orange" Offset="0.5"/>
+                                                <pv:GradientStop Color="DodgerBlue" Offset="1"/>
+                                            </pv:GradientStopCollection>
+                                        </pv:Border.GradientStops>
+                                    </pv:Border>
+                                </pv:PancakeView.Border>
+
+
+                                <Grid VerticalOptions="StartAndExpand" HorizontalOptions="FillAndExpand">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <BoxView BackgroundColor="Gray" WidthRequest="3" HorizontalOptions="Start"
+                                     VerticalOptions="FillAndExpand"/>
+                                    <xct:Expander Grid.Column="1">
+                                        <xct:Expander.Header>
+                                            <Grid HorizontalOptions="FillAndExpand">
+
+                                                <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                                                    <Label Text="{Binding OrderName}" TextColor="Black" FontSize="27" 
+                                                   HorizontalOptions="Center"/>
+
+                                                </StackLayout>
+
+
+                                            </Grid>
+                                        </xct:Expander.Header>
+
+                                        <StackLayout>
+                                            <Label  FontSize="20"  Text="{Binding IDOrder}"/>
+                                            <Label  FontSize="20"  Text="{Binding DateTimeOrder,StringFormat='{0:MMMM dd, yyyy}'}"/>
+                                            <Label  FontSize="20"  Text="{Binding DateTimeOrder,StringFormat='{0:hh:mm:ss tt}'}"/>
+                                            <Label  FontSize="20"  Text="{Binding DeviceID}"/>
+                                        </StackLayout>
+                                    </xct:Expander>
+                                </Grid>
+
+                            </pv:PancakeView>
+
+                        </Grid>
+
+                        <!--<Frame Margin="5" Style="{StaticResource FrameStyle}" BackgroundColor="Red"  Padding="0">
+                                <xct:Expander Margin="5" >
+                                    <xct:Expander.Header>
+                                       
+                                        
+                                            <Label Text="{Binding OrderName}"/>
+                                       
+                                       
+                                    </xct:Expander.Header>
+                                    <StackLayout>
+                                        <Label Text="{Binding IDOrder}"/>
+                                        <Label Text="{Binding DateTimeOrder,StringFormat='{0:MMMM dd, yyyy}'}"/>
+                                        <Label Text="{Binding DateTimeOrder,StringFormat='{}{0:hh\\:mm}'}"/>
+                                        <Label Text="{Binding DeviceID}"/>
+                                    </StackLayout>
+                                    
+                                </xct:Expander>
+
+
+                            </Frame>-->
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </StackLayout>
+
+
+    </Frame>
+</ContentPage>

@@ -11,6 +11,7 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Xamarin.CommunityToolkit.Extensions;
+using FFImageLoading.Forms;
 
 namespace My_Wallet.Views
 {
@@ -30,10 +31,17 @@ namespace My_Wallet.Views
            lblRestoreLink.Text= Preferences.Get(settingDownloadName, string.Empty);
             lbllastBackup.Text = Preferences.Get(strLastBackup, string.Empty);
 
-
+         
 
             base.OnAppearing();
         }
+
+
+
+   
+
+
+
         private async void btnUpload_Clicked(object sender, EventArgs e)
         {
            
@@ -161,7 +169,7 @@ namespace My_Wallet.Views
                 if (progressBar.Progress == 1)
                 {
 
-                    Task.Run(async()=> { await this.DisplayToastAsync("BackUp Complete", 3000); });  
+                    Task.Run(async()=> { await this.DisplayToastAsync("Restore Complete", 3000); });  
                 }
             }));
         }
@@ -176,7 +184,7 @@ namespace My_Wallet.Views
             {
                 if (result == Password)
                 {
-                    await this.DisplayToastAsync("Start BackUp", 3000);
+                    await this.DisplayToastAsync("Start Restore", 3000);
                 }
                 else
                 {
@@ -198,6 +206,8 @@ namespace My_Wallet.Views
         }
 
         string Password = "1200";
+
+        //this code is for enter firebase link to download from server manual using this method if application didnt regonize restore link
         private async void RestoreDBManual_Clicked(object sender, EventArgs e)
         {
             string result = await DisplayPromptAsync("Security", "What's Password?");
@@ -234,5 +244,73 @@ namespace My_Wallet.Views
                 return;
             }
         }
+
+        private async void UploadImage_Clicked(object sender, EventArgs e)
+        {
+            var photo = await Xamarin.Essentials.MediaPicker.PickPhotoAsync();
+
+            if (photo == null)
+                return;
+
+        
+            var task = new FirebaseStorage("khiratserv.appspot.com",
+                new FirebaseStorageOptions
+                {
+                    ThrowOnCancel = true
+                })
+                .Child("DidYouSubscribe")
+                .Child("ToMyChannelYet")
+                .Child(photo.FileName)
+                .PutAsync(await photo.OpenReadAsync());
+
+
+
+            task.Progress.ProgressChanged += (s, args) =>
+            {
+                progressBar.Progress = args.Percentage;
+            };
+
+            var downloadlink = await task;
+         
+
+        }
+
+        private async void ViewImage_Clicked(object sender, EventArgs e)
+        {
+
+
+            await Navigation.PushModalAsync(new Views.ListImages());
+
+           
+            //ContentPage m = new ContentPage();
+
+            //Grid grid = new Grid();
+
+
+
+            //var cachedImage = new CachedImage()
+            //{
+
+            //    CacheDuration = TimeSpan.FromDays(30),
+            //    DownsampleToViewSize = true,
+            //    RetryCount = 0,
+            //    RetryDelay = 250,
+            //    BitmapOptimizations = false,
+            //    Source = "https://firebasestorage.googleapis.com/v0/b/khiratserv.appspot.com/o/DidYouSubscribe%2FToMyChannelYet%2Fdownload.jpeg?alt=media&token=50443632-ffc1-43dc-a294-0298fe2d7098"
+            //};
+
+            //m.BackgroundColor = Color.White;
+            //grid.BackgroundColor = Color.White;
+
+            //grid.Children.Add(cachedImage);
+
+            //m.Padding = 4;
+
+            //m.Content = grid;
+
+            //await Navigation.PushModalAsync(m);
+        }
+
+
     }
 }

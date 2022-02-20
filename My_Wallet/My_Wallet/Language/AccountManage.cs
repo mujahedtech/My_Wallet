@@ -329,6 +329,74 @@ namespace My_Wallet.Language
                 OnPropertyChanged(nameof(SortArealbl));
             }
         }
+        private string customdatelbl;
+        public string CustomDatelbl
+        {
+            get
+            {
+                return customdatelbl;
+            }
+            set
+            {
+                customdatelbl = value;
+                OnPropertyChanged(nameof(CustomDatelbl));
+            }
+        }
+
+        private string fromlbl;
+        public string Fromlbl
+        {
+            get
+            {
+                return fromlbl;
+            }
+            set
+            {
+                fromlbl = value;
+                OnPropertyChanged(nameof(Fromlbl));
+            }
+        }
+        private string tolbl;
+        public string Tolbl
+        {
+            get
+            {
+                return tolbl;
+            }
+            set
+            {
+                tolbl = value;
+                OnPropertyChanged(nameof(Tolbl));
+            }
+        }
+        private string inquerylbl;
+        public string Inquerylbl
+        {
+            get
+            {
+                return inquerylbl;
+            }
+            set
+            {
+                inquerylbl = value;
+                OnPropertyChanged(nameof(Inquerylbl));
+            }
+        }
+        private string selectyearlbl;
+        public string SelectYearlbl
+        {
+            get
+            {
+                return selectyearlbl;
+            }
+            set
+            {
+                selectyearlbl = value;
+                OnPropertyChanged(nameof(SelectYearlbl));
+            }
+        }
+
+
 
 
 
@@ -354,6 +422,11 @@ namespace My_Wallet.Language
             if (CL.PassingParameter.ArLanguage)
             {
 
+
+
+                Tolbl = "الى";
+
+                Fromlbl = "من";
 
                 Headerlbl = "ادارة الحسابات";
 
@@ -398,10 +471,23 @@ namespace My_Wallet.Language
                 FilterArealbl = "منطقة الفلتر";
 
                 SortArealbl = "منطقة الترتيب";
+
+                CustomDatelbl = "تاريخ مخصص";
+
+
+
+                Inquerylbl = "استعلام";
+
+                SelectYearlbl = "حدد السنة";
+
                 return;
             }
 
 
+
+            Tolbl = "To";
+
+            Fromlbl = "From";
 
             Headerlbl = "Account Manager";
 
@@ -446,6 +532,15 @@ namespace My_Wallet.Language
             FilterArealbl = "Filter Area";
 
             SortArealbl = "Sort Area";
+
+            CustomDatelbl = "Custom Date";
+
+
+
+            Inquerylbl = "Inquery";
+
+            SelectYearlbl = "Select Year";
+
 
 
         }

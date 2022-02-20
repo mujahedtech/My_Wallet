@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="My_Wallet.Views.ListImages"
+                          xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations">
+    <Grid>
+       
+        <CollectionView Margin="0,5" x:Name="TransactionList" >
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical"
+                        Span="2" />
+            </CollectionView.ItemsLayout>
+
+
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+
+                    <SwipeView  >
+
+
+                        <Grid HeightRequest="200"  BackgroundColor="White" >
+
+
+
+                            <ffimageloading:CachedImage HorizontalOptions="Center" VerticalOptions="Center"
+			WidthRequest="300" HeightRequest="300"
+			DownsampleToViewSize="true"
+			Source = "{Binding SourceImage}">
+                                <ffimageloading:CachedImage.Transformations>
+                                    <fftransformations:GrayscaleTransformation />
+                                </ffimageloading:CachedImage.Transformations>
+                            </ffimageloading:CachedImage>
+
+
+                        </Grid>
+
+                    </SwipeView>
+
+
+
+
+
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+   
+
+</ContentPage>

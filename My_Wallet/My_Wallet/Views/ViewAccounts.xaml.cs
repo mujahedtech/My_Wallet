@@ -45,8 +45,61 @@ namespace My_Wallet.Views
         public ViewAccounts()
         {
             InitializeComponent();
+
+            SetMonthlyYear();
         }
 
+
+        //>الة يتم من خلال تحديد ما هي السنة الحالية من اجل ان تكون محددة عن طلب تقرير شهري لكل سنة
+        void SetMonthlyYear()
+        {
+            switch (DateTime.Now.Year)
+            {
+                case 2021:
+                    MonthlyYear2021.IsChecked = true;
+                    break;
+                case 2022:
+                    MonthlyYear2022.IsChecked = true;
+                    break;
+                case 2023:
+                    MonthlyYear2023.IsChecked = true;
+                    break;
+                case 2024:
+                    MonthlyYear2024.IsChecked = true;
+                    break;
+
+            }
+
+        }
+
+
+        //دالة من خلال يتم تحديد ما هي السنة التي يجب عمل تقرير شهري لها
+        int GetMontlyReportYear()
+        {
+
+            int Value = 0;
+
+
+            if (MonthlyYear2021.IsChecked == true)
+            {
+                Value = 2021;
+            }
+           else if (MonthlyYear2022.IsChecked == true)
+            {
+                Value = 2022;
+            }
+            else if (MonthlyYear2023.IsChecked == true)
+            {
+                Value = 2023;
+            }
+            else if (MonthlyYear2024.IsChecked == true)
+            {
+                Value = 2024;
+            }
+
+            return Value;
+
+        }
 
 
 
@@ -92,7 +145,7 @@ namespace My_Wallet.Views
 
             var Transaction = await CL.PassingParameter._connection.Table<Tables.Transactions>().ToListAsync();
 
-            TransactionList.ItemsSource = Accounts;
+           
 
 
 
@@ -100,7 +153,7 @@ namespace My_Wallet.Views
 
 
 
-            var results = (from table1 in Transaction.AsEnumerable()
+            var results = from table1 in Transaction.AsEnumerable()
                            join table2 in Accounts.AsEnumerable() on table1.IDAccount equals table2.AccountID
                            select new TransactionsViewModel
                            {
@@ -114,7 +167,7 @@ namespace My_Wallet.Views
                                AccountType= table2.AccountType
 
 
-                           });
+                           };
 
 
 
@@ -123,7 +176,20 @@ namespace My_Wallet.Views
             filter = TransactionsViewModels.ToList();
 
 
-            TransactionList.ItemsSource = TransactionsViewModels;
+            DateTime StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            DateTime EndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
+
+
+
+            var CurrentMonth = results.ToList();
+
+            CurrentMonth = CurrentMonth.Where(i => i.EnteredDate >= StartDate).ToList() ;
+            CurrentMonth = CurrentMonth.Where(i => i.EnteredDate <= EndDate).ToList() ;
+
+            EmplementSum(CurrentMonth.Sum(i => i.Amount));
+
+
+            TransactionList.ItemsSource = CurrentMonth;
 
            
 
@@ -133,7 +199,7 @@ namespace My_Wallet.Views
 
             #region Create List account Name
 
-            var resultsAccountType = (from table1 in Accounts.AsEnumerable()
+             var resultsAccountType = (from table1 in Accounts.AsEnumerable()
                            join table2 in AccountsType.AsEnumerable() on table1.AccountType equals table2.TypeID
                            select new TableAccountView
                            {
@@ -239,15 +305,17 @@ namespace My_Wallet.Views
             {
                 filter = filter.Where(i => i.AccountName != "").ToList();
 
-                
+                filter = filter.Where(i => i.EnteredDate.Year == GetMontlyReportYear()).ToList();
+
+
 
             }
             
             if (lblMonthName.Text != null)
             {
                 
-                DateTime StartDate = new DateTime(2021, SelectedMonth.MonthID, 1);
-                DateTime EndDate = new DateTime(2021, SelectedMonth.MonthID, DateTime.DaysInMonth(2021,SelectedMonth.MonthID));
+                DateTime StartDate = new DateTime(GetMontlyReportYear(), SelectedMonth.MonthID, 1);
+                DateTime EndDate = new DateTime(GetMontlyReportYear(), SelectedMonth.MonthID, DateTime.DaysInMonth(GetMontlyReportYear(), SelectedMonth.MonthID));
 
 
                 filter = filter.Where(i => i.EnteredDate >= StartDate).ToList();
@@ -260,8 +328,8 @@ namespace My_Wallet.Views
            else if (lblMonthName.Text == null)
             {
 
-              
 
+              
 
                 filter = filter.Where(i => i.EnteredDate != null).ToList();
                
@@ -269,12 +337,16 @@ namespace My_Wallet.Views
                
             }
 
+           
+
             filter = filter.OrderBy(i => i.EnteredDate).ToList();
             if (Asc == false)
             {
                 filter = filter.OrderByDescending(i => i.EnteredDate).ToList();
 
             }
+
+
             TransactionList.ItemsSource = CL.ObjectConvertor.ConvertTransactionList(filter);
 
             EmplementSum(filter.Sum(i=>i.Amount));
@@ -403,7 +475,7 @@ namespace My_Wallet.Views
 
                                            AccountName=g.Key,
                                            AccountColor= g.FirstOrDefault().AccountColor,
-                                           Amount = g.Select(l => l.Amount).Sum()
+                                           Amount = g.Select(l => l.Amount).Sum(),EnteredDate = new DateTime(GetMontlyReportYear(), 1, 1)
                                        });
 
 
@@ -462,15 +534,26 @@ namespace My_Wallet.Views
                 Lang = new CultureInfo("ar-Jo");
             }
 
-            var filterJustExpenses = filter.Where(i => i.AccountType == 1).ToList();
+            var filterJustExpenses = filter.Where(i => i.AccountType == 1 && i.EnteredDate.Year==GetMontlyReportYear()).ToList();
 
             var q = from i in filterJustExpenses
                     group i by i.EnteredDate.ToString("MMMM", Lang) into grp
-                    select new TransactionsViewModel { AccountName = grp.Key,AccountColor= grp.FirstOrDefault().AccountColor, Amount =double.Parse( grp.Sum(i => i.Amount).ToString("0").Replace(" ","")) };
+                    select new TransactionsViewModel 
+                    { 
+                        AccountName = grp.Key,
+                        AccountColor= grp.FirstOrDefault().AccountColor, 
+                        Amount =double.Parse( grp.Sum(i => i.Amount).ToString("0").Replace(" ","")),
+                        EnteredDate = new DateTime(GetMontlyReportYear(), 1, 1)
+                    };
 
             var ReportChart = from i in filterJustExpenses
                               group i by i.EnteredDate.ToString("MM", Lang) into grp
-                    select new TransactionsViewModel { AccountName = grp.Key, AccountColor = grp.FirstOrDefault().AccountColor, Amount = double.Parse(grp.Sum(i => i.Amount).ToString("0").Replace(" ", "")) };
+                    select new TransactionsViewModel
+                    { 
+                        AccountName = grp.Key, 
+                        AccountColor = grp.FirstOrDefault().AccountColor,
+                        Amount = double.Parse(grp.Sum(i => i.Amount).ToString("0").Replace(" ", "")) ,EnteredDate=new DateTime(GetMontlyReportYear(), 1,1)
+                    };
 
 
             CL.PassingParameter.MonthSummaryList = ReportChart.ToList();
@@ -536,5 +619,66 @@ namespace My_Wallet.Views
 
            
         }
+
+        private void FiltlerViewallAccount_Clicked(object sender, EventArgs e)
+        {
+            filter = filter.Where(i => i.AccountName != "").ToList();
+
+            filter = filter.Where(i => i.EnteredDate != null).ToList();
+            TransactionList.ItemsSource = CL.ObjectConvertor.ConvertTransactionList(filter);
+
+            EmplementSum(filter.Sum(i => i.Amount));
+
+            CL.AnimationObject.AnimationHeightFrame(FrameFilter);
+        }
+
+        private void CustomDateInquery_Clicked(object sender, EventArgs e)
+        {
+
+            var CustomDate = filter;
+
+            CustomDate = CustomDate.Where(i => i.EnteredDate >= CustomDateFrom.Date).ToList();
+            CustomDate = CustomDate.Where(i => i.EnteredDate <= CustomDateTo.Date).ToList();
+
+
+            if (lblAccountName.Text != null)
+            {
+                CustomDate = CustomDate.Where(i => i.AccountName == lblAccountName.Text).ToList();
+
+
+
+            }
+
+
+
+
+            CustomDate = CustomDate.Where(i => i.EnteredDate != null).ToList();
+
+            CustomDate = CustomDate.OrderBy(i => i.EnteredDate).ToList();
+            if (Asc == false)
+            {
+                CustomDate = CustomDate.OrderByDescending(i => i.EnteredDate).ToList();
+
+            }
+
+
+            TransactionList.ItemsSource = CL.ObjectConvertor.ConvertTransactionList(CustomDate);
+
+            EmplementSum(CustomDate.Sum(i => i.Amount));
+
+            CL.AnimationObject.AnimationHeightFrame(FrameFilter);
+
+
+
+
+
+
+        }
+
+
+
+
+
+
     }
 }

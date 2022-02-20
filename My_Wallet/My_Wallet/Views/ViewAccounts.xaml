@@ -6,8 +6,7 @@
              x:Class="My_Wallet.Views.ViewAccounts"
              ControlTemplate="{x:DynamicResource ControlTemplate }"
                xmlns:xct="http://xamarin.com/schemas/2020/toolkit" 
-             xmlns:VM="clr-namespace:My_Wallet.ViewModel"
-             >
+             xmlns:VM="clr-namespace:My_Wallet.ViewModel" xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView">
     
 
 
@@ -92,7 +91,7 @@
             <RowDefinition/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <CollectionView Margin="0,5" x:Name="TransactionList"  FlowDirection="{Binding FlowDirectionlbl ,Converter={StaticResource FlowDirectionConvertor}}">
+        <CollectionView  Margin="0,5" x:Name="TransactionList"  FlowDirection="{Binding FlowDirectionlbl ,Converter={StaticResource FlowDirectionConvertor}}">
             <CollectionView.ItemsLayout>
                 <GridItemsLayout Orientation="Vertical"
                         Span="2" />
@@ -165,7 +164,7 @@
                             
 
                             <Label
-                                Text="{Binding EnteredDate,Converter={StaticResource ShortDate}}"
+                               Text="{Binding EnteredDate,StringFormat='{0:dd/MMMM}'}"
                                 Grid.Column="1" Grid.Row="0"
                                 Margin="5"
                                 TextColor="{Binding AccountColor}" 
@@ -200,11 +199,24 @@
                                        TextColor="Black" FontSize="10"  Margin="5,0"  
                                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  />
                             </StackLayout>
-                         
+
+
+                            <Label Text="{Binding Amount,Converter={StaticResource NumberLanguage }}" 
+                                       TextColor="Black" FontSize="20"  FontAttributes="Bold"  
+                                       HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                   Grid.Column="3" Grid.Row="2"
+                                   />
 
 
 
 
+                            <Label
+                                Text="{Binding EnteredDate,StringFormat='{0:yyyy}'}"
+                                Grid.Column="3" Grid.Row="0"
+                                Margin="5"
+                                TextColor="{Binding AccountColor}" 
+                                FontSize="12" FontAttributes="Bold"  
+                                HorizontalTextAlignment="Center" VerticalTextAlignment="Start"  />
 
                             <Grid BackgroundColor="Gray" Grid.Row="3" Grid.ColumnSpan="4"/>
 
@@ -223,49 +235,148 @@
 
 
 
-
+        
 
 
         <Grid Grid.Row="1" BackgroundColor="White">
             <Entry IsReadOnly="True" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" FontSize="20" TextColor="DodgerBlue" FontAttributes="Bold"  x:Name="lblSum"/>
         </Grid>
+        
+       
 
 
         <Frame FlowDirection="{Binding FlowDirectionlbl ,Converter={StaticResource FlowDirectionConvertor}}" Grid.RowSpan="2" BackgroundColor="White" CornerRadius="0" BorderColor="Black" Margin="0,80,0,0" Padding="0" x:Name="FrameFilter" VerticalOptions="End" HeightRequest="0">
-            <StackLayout Margin="10" FlowDirection="{Binding FlowDirectionlbl}">
-                <StackLayout.GestureRecognizers>
-                    <TapGestureRecognizer x:Name="CLoseFilterView" Tapped="CLoseFilterView_Tapped"/>
-                </StackLayout.GestureRecognizers>
-                <Grid HeightRequest="2" BackgroundColor="Black" Margin="50,0"/>
 
-                <Label HorizontalOptions="Center" Text="{Binding FilterArealbl}" FontSize="20" FontAttributes="Bold"/>
-                <Grid HeightRequest="1" BackgroundColor="Black" Margin="50,0"/>
-                <StackLayout Orientation="Horizontal">
-                    <Label x:Name="lblAccountName" TextColor="DodgerBlue" Text="{Binding AccountName}" Style="{StaticResource StanderdLabel}" HorizontalOptions="StartAndExpand"/>
+            <ScrollView >
+                <StackLayout Margin="10" FlowDirection="{Binding FlowDirectionlbl}">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer x:Name="CLoseFilterView" Tapped="CLoseFilterView_Tapped"/>
+                    </StackLayout.GestureRecognizers>
+                    <Grid HeightRequest="2" BackgroundColor="Black" Margin="50,0"/>
+
+                    <Label HorizontalOptions="Center" Text="{Binding FilterArealbl}" FontSize="20" FontAttributes="Bold"/>
+                    <Grid HeightRequest="1" BackgroundColor="Black" Margin="50,0"/>
+                    <Button Text="View All" CornerRadius="8" x:Name="FiltlerViewallAccount" Clicked="FiltlerViewallAccount_Clicked"  FontSize="20"  TextColor="White" BackgroundColor="DodgerBlue" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"/>
+
+                    <StackLayout Orientation="Horizontal">
+                        <Label x:Name="lblAccountName" TextColor="DodgerBlue" Text="{Binding AccountName}" Style="{StaticResource StanderdLabel}" HorizontalOptions="StartAndExpand"/>
+
+
+                        <Button ClassId="Account" Clicked="ClearFilter_Clicked" WidthRequest="30"  Text="X" TextColor="White" BackgroundColor="Red" HorizontalOptions="End"/>
+                        <Button x:Name="btnAccountSelect" Clicked="btnAccountSelect_Clicked" Text="{Binding SelectAccountlbl}" HorizontalOptions="End"/>
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal">
+                        <Label x:Name="lblMonthName" TextColor="DodgerBlue" Text="{Binding MonthName}" Style="{StaticResource StanderdLabel}" HorizontalOptions="StartAndExpand"/>
+
+
+                        <Button ClassId="Month" Clicked="ClearFilter_Clicked"  Text="X" WidthRequest="30"  TextColor="White" BackgroundColor="Red" HorizontalOptions="End"/>
+                        <Button x:Name="btnMonthSelect" Clicked="btnMonthSelect_Clicked"  Text="{Binding SelectMonthlbl}" HorizontalOptions="End"/>
+                    </StackLayout>
+
+                    <Label HorizontalOptions="Center" Text="{Binding SortArealbl}" FontSize="20" FontAttributes="Bold"/>
+                    <Grid HeightRequest="1" BackgroundColor="Black" Margin="50,0"/>
+
+                    <StackLayout Orientation="Horizontal" Spacing="5">
+                        <RadioButton HeightRequest="50" x:Name="SortAmount" ClassId="1" HorizontalOptions="FillAndExpand" Content="Amount" ControlTemplate ="{StaticResource ToggleButton}"/>
+                        <RadioButton HeightRequest="50" x:Name="SortDate" IsChecked="True" ClassId="2"  HorizontalOptions="FillAndExpand" Content="Date" ControlTemplate ="{StaticResource ToggleButton}"/>
+
+                    </StackLayout>
+
+
+                    <Grid HeightRequest="20"/>
+
+                    <pv:PancakeView Padding="10" CornerRadius="0,10,0,10"   BackgroundColor="White" VerticalOptions="StartAndExpand" 
+                                    HorizontalOptions="FillAndExpand">
+                        <pv:PancakeView.Border>
+                            <pv:Border Thickness="6">
+                                <pv:Border.GradientStops>
+                                    <pv:GradientStopCollection>
+                                        <pv:GradientStop Color="Red" Offset="0"/>
+                                        <pv:GradientStop Color="Orange" Offset="0.5"/>
+                                        <pv:GradientStop Color="DodgerBlue" Offset="1"/>
+                                    </pv:GradientStopCollection>
+                                </pv:Border.GradientStops>
+                            </pv:Border>
+                        </pv:PancakeView.Border>
+
+
+                        <Grid VerticalOptions="StartAndExpand" HorizontalOptions="FillAndExpand">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <BoxView BackgroundColor="Gray" WidthRequest="3" HorizontalOptions="Start"
+                                     VerticalOptions="FillAndExpand"/>
+                            <xct:Expander Grid.Column="1">
+                                <xct:Expander.Header>
+                                    <Grid HorizontalOptions="FillAndExpand">
+
+                                        <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                                            <Label Text="{Binding CustomDatelbl}" TextColor="Black" FontSize="27" 
+                                                   HorizontalOptions="Center"/>
+
+                                        </StackLayout>
+
+
+                                    </Grid>
+                                </xct:Expander.Header>
+
+                                <Grid RowSpacing="5">
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="10"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    
+                                  
+                                        <Label Grid.Row="0" Grid.Column="0"  TextColor="DodgerBlue" Text="{Binding Fromlbl}" Style="{StaticResource StanderdLabel}" HorizontalOptions="Start"/>
+                                    <Label Grid.Row="1" Grid.Column="0"   TextColor="DodgerBlue" Text="{Binding Tolbl}" Style="{StaticResource StanderdLabel}" HorizontalOptions="Start"/>
+
+
+                                    <DatePicker x:Name="CustomDateFrom" Grid.Row="0" Grid.Column="2" HorizontalOptions="StartAndExpand"/>
+
+
+
+                                    <DatePicker x:Name="CustomDateTo" Grid.Row="1" Grid.Column="2" HorizontalOptions="StartAndExpand"/>
+
+
+                                    <Button x:Name="CustomDateInquery" Clicked="CustomDateInquery_Clicked" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Inquerylbl}" CornerRadius="8"  FontSize="20"  TextColor="White" BackgroundColor="DodgerBlue" FontAttributes="Bold" HorizontalOptions="FillAndExpand"/>
+
+
+                                </Grid>
+
+                            </xct:Expander>
+                        </Grid>
+
+                    </pv:PancakeView>
+
+                    <Grid HeightRequest="20"/>
+
+                    <Label HorizontalOptions="Center" Text="{Binding SelectYearlbl}" FontSize="20" FontAttributes="Bold"/>
+                    <Grid HeightRequest="1" BackgroundColor="Black" Margin="50,0"/>
+                    <StackLayout Orientation="Horizontal" Spacing="5">
+                        <RadioButton HeightRequest="50" x:Name="MonthlyYear2021" GroupName="0"  HorizontalOptions="FillAndExpand" Content="2021" ControlTemplate ="{StaticResource ToggleButton}"/>
+                        <RadioButton HeightRequest="50" x:Name="MonthlyYear2022"  GroupName="0"   HorizontalOptions="FillAndExpand" Content="2022" ControlTemplate ="{StaticResource ToggleButton}"/>
+                        <RadioButton HeightRequest="50" x:Name="MonthlyYear2023"  GroupName="0"  HorizontalOptions="FillAndExpand" Content="2023" ControlTemplate ="{StaticResource ToggleButton}"/>
+                        <RadioButton HeightRequest="50" x:Name="MonthlyYear2024"  GroupName="0"   HorizontalOptions="FillAndExpand" Content="2024" ControlTemplate ="{StaticResource ToggleButton}"/>
+
+                    </StackLayout>
+
+                    <Grid HeightRequest="20"/>
                     
                     
-                    <Button ClassId="Account" Clicked="ClearFilter_Clicked" WidthRequest="30"  Text="X" TextColor="White" BackgroundColor="Red" HorizontalOptions="End"/>
-                    <Button x:Name="btnAccountSelect" Clicked="btnAccountSelect_Clicked" Text="{Binding SelectAccountlbl}" HorizontalOptions="End"/>
                 </StackLayout>
-
-                <StackLayout Orientation="Horizontal">
-                    <Label x:Name="lblMonthName" TextColor="DodgerBlue" Text="{Binding MonthName}" Style="{StaticResource StanderdLabel}" HorizontalOptions="StartAndExpand"/>
-
-
-                    <Button ClassId="Month" Clicked="ClearFilter_Clicked"  Text="X" WidthRequest="30"  TextColor="White" BackgroundColor="Red" HorizontalOptions="End"/>
-                    <Button x:Name="btnMonthSelect" Clicked="btnMonthSelect_Clicked"  Text="{Binding SelectMonthlbl}" HorizontalOptions="End"/>
-                </StackLayout>
-
-                <Label HorizontalOptions="Center" Text="{Binding SortArealbl}" FontSize="20" FontAttributes="Bold"/>
-                <Grid HeightRequest="1" BackgroundColor="Black" Margin="50,0"/>
-
-                <StackLayout Orientation="Horizontal" Spacing="5">
-                    <RadioButton HeightRequest="50" x:Name="SortAmount" ClassId="1" HorizontalOptions="FillAndExpand" Content="Amount" ControlTemplate ="{StaticResource ToggleButton}"/>
-                    <RadioButton HeightRequest="50" x:Name="SortDate" IsChecked="True" ClassId="2"  HorizontalOptions="FillAndExpand" Content="Date" ControlTemplate ="{StaticResource ToggleButton}"/>
-
-                </StackLayout>
-
-            </StackLayout>
+            </ScrollView>
+            
+           
         </Frame>
 
 

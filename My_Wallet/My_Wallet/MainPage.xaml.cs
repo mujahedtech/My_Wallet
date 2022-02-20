@@ -24,14 +24,69 @@ namespace My_Wallet
         {
             InitializeComponent();
 
-          
+            SetMonthlyYear();
+        }
+
+        //>الة يتم من خلال تحديد ما هي السنة الحالية من اجل ان تكون محددة عن طلب تقرير شهري لكل سنة
+        void SetMonthlyYear()
+        {
+            switch (DateTime.Now.Year)
+            {
+                case 2021:
+                    MonthlyYear2021.IsChecked = true;
+                    break;
+                case 2022:
+                    MonthlyYear2022.IsChecked = true;
+                    break;
+                case 2023:
+                    MonthlyYear2023.IsChecked = true;
+                    break;
+                case 2024:
+                    MonthlyYear2024.IsChecked = true;
+                    break;
+
+            }
+
+        }
+
+
+        //دالة من خلال يتم تحديد ما هي السنة التي يجب عمل تقرير شهري لها
+        int GetMontlyReportYear()
+        {
+
+            int Value = 0;
+
+
+            if (MonthlyYear2021.IsChecked == true)
+            {
+                Value = 2021;
+            }
+            else if (MonthlyYear2022.IsChecked == true)
+            {
+                Value = 2022;
+            }
+            else if (MonthlyYear2023.IsChecked == true)
+            {
+                Value = 2023;
+            }
+            else if (MonthlyYear2024.IsChecked == true)
+            {
+                Value = 2024;
+            }
+
+            return Value;
+
         }
 
 
 
-       
-        async void CreateFuelReport()
+
+        async void CreateMainReport(int Year=0)
         {
+            if (Year==0)
+            {
+                Year = DateTime.Now.Year;
+            }
             List<ChartEntry> entries = new List<ChartEntry>();
 
             ObservableCollection<TransactionsViewModel> TransactionsViewModels = new ObservableCollection<TransactionsViewModel>();
@@ -40,11 +95,14 @@ namespace My_Wallet
 
             var Transaction = await CL.PassingParameter._connection.Table<Tables.Transactions>().ToListAsync();
 
+
+
+            //Just First Time
             int PinAccountIndex = 0;
             if (CL.DataValidation.IsDouble(Preferences.Get(CL.PassingParameter.PinHomeScreenID, string.Empty)))
             {
                 PinAccountIndex =int.Parse( Preferences.Get(CL.PassingParameter.PinHomeScreenID, string.Empty));
-                lblPinAccountName.Text = Accounts.Where(i => i.AccountID == PinAccountIndex).FirstOrDefault().AccountName;
+                lblPinAccountName.Text = Accounts.Where(i => i.AccountID == PinAccountIndex ).FirstOrDefault().AccountName;
 
                 //lblPinAccountName.BackgroundColor = Color.FromHex(CL.PassingParameter.CreateRandomColor());
 
@@ -74,7 +132,11 @@ namespace My_Wallet
 
                            });
 
+            results = results.Where(i => i.EnteredDate.Year == Year);
+
             TransactionsViewModels = CL.ObjectConvertor.ConvertTransactionList(results);
+
+            
 
            var filter = TransactionsViewModels.ToList();
 
@@ -93,10 +155,16 @@ namespace My_Wallet
             q=q.OrderByDescending(i => i.EnteredDate).ToList();
 
             var Monthreport = CL.ObjectConvertor.ConvertTransactionList(q);
-       
 
 
-            for (int i = 0; i < Monthreport.Count; i++)
+            int ChartNumberView = Monthreport.Count;
+
+            //if (ChartNumberView>8)
+            //{
+            //    ChartNumberView = 12;
+            //}
+
+            for (int i = 0; i < ChartNumberView; i++)
             {
                 string Color =CL.PassingParameter. CreateRandomColor();
                 entries.Add(new ChartEntry(int.Parse(Monthreport[i].Amount.ToString("0")))
@@ -114,6 +182,8 @@ namespace My_Wallet
             chartViewBar.Chart = new LineChart { Entries = entries, LabelTextSize = 30, ValueLabelOrientation = Orientation.Horizontal, LabelOrientation = Orientation.Horizontal};
             //chartViewBar.Chart = new RadialGaugeChart { Entries = entries, LabelTextSize = 30,  };
 
+            FirstRun = true;
+
         }
 
 
@@ -121,9 +191,9 @@ namespace My_Wallet
 
         protected override  void OnAppearing()
         {
-           
 
-            CreateFuelReport();
+
+            CreateMainReport();
 
             StartAnimationButton(btnAccountReport, "D");
             StartAnimationButton(btnAccounts,"L");
@@ -291,6 +361,15 @@ namespace My_Wallet
                     break;
 
             }
+        }
+        public bool FirstRun = false;
+        private void MonthlyMainAccountReport(object sender, CheckedChangedEventArgs e)
+        {
+            if (FirstRun)
+            {
+                CreateMainReport(GetMontlyReportYear());
+            }
+           
         }
     }
 }

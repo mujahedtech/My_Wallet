@@ -73,13 +73,66 @@ namespace My_Wallet.Views
         }
 
         List<NumPad> NumPadView = new List<NumPad>();
-        protected override async void OnAppearing()
+
+
+
+
+        List<Tables.Accounts> Accounts;
+        List<Tables.Transactions> Transaction;
+
+         void PrepairAccount(bool Distinct=false)
         {
 
-            var Accounts = await CL.PassingParameter._connection.Table<Tables.Accounts>().ToListAsync();
+            IEnumerable<TransactionsViewModel> AccountList;
 
+          
+            var results = from table1 in Transaction.AsEnumerable()
+                           join table2 in Accounts.AsEnumerable() on table1.IDAccount equals table2.AccountID
+                           select new TransactionsViewModel
+                           {
+
+                               IDTransaction = table1.IDTransaction,
+                               EnteredDate = table1.EnteredDate,
+                               Amount = table1.Amount,
+                               Notes = table1.Notes,
+                               AccountName = table2.AccountName,
+                               AccountColor = table2.AccountColor,
+                               AccountType = table2.AccountType
+
+
+                           };
+
+            if (Distinct == false)
+            {
+                AccountList=results;
+            }
+
+            var DistinctAccount = results.GroupBy(i => i.AccountName)
+                                       .Select(g => new TransactionsViewModel
+                                       {
+
+                                           AccountName = g.Key,
+                                           AccountColor = g.FirstOrDefault().AccountColor,
+                                           Amount = g.Select(l => l.Amount).Sum()
+                                       });
+
+
+            
+
+        }
+
+        protected override async void OnAppearing()
+        {
+            Accounts = await CL.PassingParameter._connection.Table<Tables.Accounts>().ToListAsync();
+
+            Transaction = await CL.PassingParameter._connection.Table<Tables.Transactions>().ToListAsync();
+
+
+            //PrepairAccount();
 
             AccountList.ItemsSource = Accounts;
+
+
 
 
 

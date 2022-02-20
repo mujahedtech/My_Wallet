@@ -28,6 +28,13 @@
             <Frame x:Name="FrameHeader" Style="{StaticResource FrameStyle}">
                 <Label x:Name="lblPinAccountName" VerticalOptions="Center" HorizontalOptions="Center" FontSize="30" FontAttributes="Bold"/>
             </Frame>
+            <StackLayout Orientation="Horizontal" Spacing="5">
+                <RadioButton CheckedChanged="MonthlyMainAccountReport" HeightRequest="50" x:Name="MonthlyYear2021" GroupName="0"  HorizontalOptions="FillAndExpand" Content="2021" ControlTemplate ="{StaticResource ToggleButton}"/>
+                <RadioButton  CheckedChanged="MonthlyMainAccountReport"  HeightRequest="50" x:Name="MonthlyYear2022"  GroupName="0"   HorizontalOptions="FillAndExpand" Content="2022" ControlTemplate ="{StaticResource ToggleButton}"/>
+                <RadioButton  CheckedChanged="MonthlyMainAccountReport"  HeightRequest="50" x:Name="MonthlyYear2023"  GroupName="0"  HorizontalOptions="FillAndExpand" Content="2023" ControlTemplate ="{StaticResource ToggleButton}"/>
+                <RadioButton  CheckedChanged="MonthlyMainAccountReport"  HeightRequest="50" x:Name="MonthlyYear2024"  GroupName="0"   HorizontalOptions="FillAndExpand" Content="2024" ControlTemplate ="{StaticResource ToggleButton}"/>
+
+            </StackLayout>
 
 
             <microcharts:ChartView VerticalOptions="FillAndExpand" x:Name="chartViewBar"  />
@@ -38,12 +45,12 @@
                          HorizontalOptions="FillAndExpand"
                          TextColor="{Binding Source={RelativeSource Self}, Path=BackgroundColor,Converter={StaticResource TextColorConvertor}}"
                          BackgroundColor="{Binding Converter={StaticResource ColorConvertor}}"
-                         Text="{Binding AccountReportlbl}"
+                         Text="{Binding ViewExpenseslbl}"
                          ClassId="3" 
                          Clicked="MainButtonClick"
                           x:Name="btnAccountReport"
                          FontAttributes="Bold"
-                        FontSize="30"
+                        FontSize="20"
                          />
 
             </Frame>

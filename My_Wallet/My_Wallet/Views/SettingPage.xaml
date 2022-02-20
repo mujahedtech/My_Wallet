@@ -1,17 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="My_Wallet.Views.SettingPage">
+             x:Class="My_Wallet.Views.SettingPage"
+              xmlns:xct="http://xamarin.com/schemas/2020/toolkit" xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView" xmlns:Con="clr-namespace:My_Wallet.Convertors">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <Con:ColorConvertor x:Key="ColorConvertor"/>
+            <Con:TextColorConvertor x:Key="TextColorConvertor"/>
+
+
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <StackLayout>
-        <StackLayout Orientation="Horizontal">
+        <StackLayout Padding="5" Orientation="Horizontal">
             <RadioButton WidthRequest="100" HeightRequest="100" x:Name="ArLang" ClassId="1" CheckedChanged="LanguagesChanged" Content="Ar" ControlTemplate ="{StaticResource ToggleButton}"/>
             <RadioButton WidthRequest="100" HeightRequest="100" x:Name="EnLang"  ClassId="2" CheckedChanged="LanguagesChanged" Content="En" ControlTemplate ="{StaticResource ToggleButton}"/>
         </StackLayout>
 
-        <Frame Style="{StaticResource FrameStyle}">
+        <Frame  Padding="5" Style="{StaticResource FrameStyle}">
             <Label FontSize="20" VerticalOptions="FillAndExpand" x:Name="txtNote"/>
 
         </Frame>
+
+
+
+        <Button Clicked="Button_Clicked" Text="Auth"/>
 
 
     </StackLayout>

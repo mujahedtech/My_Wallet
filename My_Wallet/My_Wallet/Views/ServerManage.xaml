@@ -2,7 +2,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              x:Class="My_Wallet.Views.ServerManage"
-             xmlns:Con="clr-namespace:My_Wallet.Convertors" xmlns:Language="clr-namespace:My_Wallet.Language">
+             xmlns:Con="clr-namespace:My_Wallet.Convertors" xmlns:Language="clr-namespace:My_Wallet.Language"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             >
     <ContentPage.BindingContext>
         <Language:AccountManage />
     </ContentPage.BindingContext>
@@ -49,5 +51,20 @@
 
         <Button Clicked="RestoreDB_Clicked" x:Name="RestoreDB" Text="{Binding Restoredatabaselbl}" TextColor="{Binding Source={RelativeSource Self}, Path=BackgroundColor,Converter={StaticResource TextColorConvertor}}" BackgroundColor="{Binding Converter={StaticResource ColorConvertor}}"/>
         <Button Clicked="RestoreDBManual_Clicked" x:Name="RestoreDBManual" Text="{Binding EnterRestoreCodelbl}" TextColor="{Binding Source={RelativeSource Self}, Path=BackgroundColor,Converter={StaticResource TextColorConvertor}}" BackgroundColor="{Binding Converter={StaticResource ColorConvertor}}"/>
+
+
+        <Button IsVisible="false" Clicked="UploadImage_Clicked" x:Name="UploadImage" Text="UploadImage" TextColor="{Binding Source={RelativeSource Self}, Path=BackgroundColor,Converter={StaticResource TextColorConvertor}}" BackgroundColor="{Binding Converter={StaticResource ColorConvertor}}"/>
+
+
+        <Button IsVisible="false" Clicked="ViewImage_Clicked" x:Name="ViewImage" Text="ViewImage" TextColor="{Binding Source={RelativeSource Self}, Path=BackgroundColor,Converter={StaticResource TextColorConvertor}}" BackgroundColor="{Binding Converter={StaticResource ColorConvertor}}"/>
+
+
+
+
+        
+       
+
+
+
     </StackLayout>
 </ContentPage>
