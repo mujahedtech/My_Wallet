@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace My_Wallet.Language
 {
@@ -398,15 +399,23 @@ namespace My_Wallet.Language
 
 
 
+        public Command CopyLink { get; }
 
 
 
 
+        public async void SaveToClipborad()
+        {
+            await Clipboard.SetTextAsync(Preferences.Get("ServerDonwloadLink", string.Empty));
 
 
+
+           
+        }
 
         public AccountManage()
         {
+            CopyLink = new Command(() => SaveToClipborad());
 
             bool LangSetting = new bool();
 

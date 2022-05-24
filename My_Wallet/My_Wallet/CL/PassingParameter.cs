@@ -116,5 +116,12 @@ namespace My_Wallet.CL
         }
 
 
+        public static bool Isdouble(string input)
+        {
+            double test = 0;
+            return double.TryParse(input, out test);
+        }
+
+
     }
 }

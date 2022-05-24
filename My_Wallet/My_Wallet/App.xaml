@@ -82,6 +82,127 @@
 
 
 
+            <!--نموذج تكست بوكس جميل جدا-->
+            <ControlTemplate x:Key="TextBoxOnlyNumber"
+                             x:DataType="RadioButton">
+                <StackLayout>
+                    <Label Margin="10,0"
+                           x:Name="PlaceHolder"
+                           Text="{TemplateBinding FontFamily}" />
+                    <Frame x:Name="MainFrame"
+                           BackgroundColor="Black"
+                           Padding="0"
+                           CornerRadius="10">
+                        <Frame BorderColor="Transparent"
+                               Margin="2"
+                               Padding="2"
+                               CornerRadius="10">
+
+                            <StackLayout Margin="10,0">
+                                <Grid>
+                                    <Entry  Keyboard="Telephone"  ClearButtonVisibility="WhileEditing"
+                                            x:Name="Entry"
+                                            Text="{Binding Source={RelativeSource TemplatedParent}, Path=Content, UpdateSourceEventName=PropertyChanged}">
+                                        <Entry.Triggers>
+                                            <Trigger TargetType="Entry"
+                                                     Property="IsFocused"
+                                                     Value="True">
+                                                <Setter Property="BackgroundColor"
+                                                        TargetName="MainFrame"
+                                                        Value="DodgerBlue" />
+                                                <Setter Property="TextColor"
+                                                        TargetName="PlaceHolder"
+                                                        Value="DodgerBlue" />
+                                                <Setter Property="TextColor"
+                                                        TargetName="Entry"
+                                                        Value="DodgerBlue" />
+                                                <!-- multiple Setters elements are allowed -->
+                                            </Trigger>
+                                        </Entry.Triggers>
+                                    </Entry>
+                                    <BoxView  VerticalOptions="End"
+                                              BackgroundColor="White"
+                                              HeightRequest="3"
+                                              Margin="0,0,0,6" />
+                                </Grid>
+
+                            </StackLayout>
+                        </Frame>
+
+                    </Frame>
+                </StackLayout>
+            </ControlTemplate>
+
+
+
+
+
+            <ControlTemplate x:Key="TextBoxHeaderWihte"
+                             x:DataType="RadioButton">
+                <StackLayout>
+                    <Label Margin="10,0"
+                           x:Name="PlaceHolder" TextColor="White"
+                           Text="{TemplateBinding FontFamily}" />
+                    <Frame x:Name="MainFrame"
+                           BackgroundColor="Black"
+                           Padding="0"
+                           CornerRadius="10">
+                        <Frame BorderColor="Transparent"
+                               Margin="2"
+                               Padding="2"
+                               CornerRadius="10">
+
+                            <StackLayout Margin="10,0">
+                                <Grid>
+                                    <Entry TextColor="{TemplateBinding TextColor}" IsReadOnly="True" Keyboard="Numeric"
+                                           ClearButtonVisibility="WhileEditing"
+                                           x:Name="Entry"
+                                           Text="{Binding Source={RelativeSource TemplatedParent}, Path=Content, UpdateSourceEventName=PropertyChanged}">
+                                        <Entry.Triggers>
+                                            <Trigger TargetType="Entry"
+                                                     Property="IsFocused"
+                                                     Value="True">
+                                                <Setter Property="BackgroundColor"
+                                                        TargetName="MainFrame"
+                                                        Value="DodgerBlue" />
+                                                <Setter Property="TextColor"
+                                                        TargetName="PlaceHolder"
+                                                        Value="DodgerBlue" />
+                                                <Setter Property="TextColor"
+                                                        TargetName="Entry"
+                                                        Value="DodgerBlue" />
+                                                <!-- multiple Setters elements are allowed -->
+                                            </Trigger>
+                                        </Entry.Triggers>
+                                    </Entry>
+                                    <BoxView  VerticalOptions="End"
+                                              BackgroundColor="White"
+                                              HeightRequest="3"
+                                              Margin="0,0,0,6" />
+                                </Grid>
+
+                            </StackLayout>
+                        </Frame>
+
+                    </Frame>
+                </StackLayout>
+            </ControlTemplate>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             <!--نموذج تاريخ جميل جدا-->
             <ControlTemplate x:Key="DateTime" x:DataType="RadioButton">
                 <StackLayout>

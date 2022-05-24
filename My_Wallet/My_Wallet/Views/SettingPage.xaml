@@ -30,5 +30,10 @@
         <Button Clicked="Button_Clicked" Text="Auth"/>
 
 
+        <Button x:Name="btnCalculator"
+                Text="Calculator" Clicked="btnCalculator_Clicked" />
+
+
+
     </StackLayout>
 </ContentPage>

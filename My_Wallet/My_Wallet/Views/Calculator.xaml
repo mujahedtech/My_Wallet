@@ -1,0 +1,312 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="My_Wallet.Views.Calculator"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:vm="clr-namespace:My_Wallet.Views">
+    <ContentPage.BindingContext>
+        <vm:CalculateVM />
+    </ContentPage.BindingContext>
+
+
+    <Grid>
+        <Frame Padding="5"
+               CornerRadius="10"
+               Margin="5">
+
+            <ScrollView>
+
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition />
+
+                    </Grid.ColumnDefinitions>
+
+
+                    <StackLayout>
+                        <RadioButton ControlTemplate="{StaticResource TextBoxOnlyNumber}"
+                                     VerticalOptions="Center"
+                                     FontFamily="Required"
+                                     Grid.Column="1"
+                                     Grid.Row="0"
+                                     Grid.ColumnSpan="3"
+                                     Content="{Binding Required,Mode=TwoWay}" />
+
+
+                        <!--#region Money Class-->
+
+
+
+
+                        <StackLayout>
+
+
+
+                            <StackLayout Orientation="Horizontal">
+
+
+
+                                <Label Text="$50"
+                                       WidthRequest="25"
+                                       VerticalOptions="Center" Margin="0,10,0,0" />
+
+                                <RadioButton ControlTemplate="{StaticResource TextBoxOnlyNumber}"
+                                             VerticalOptions="Center"
+                                             FontFamily="{Binding Count_50}"
+                                             Grid.Column="1"
+                                             Grid.Row="0" HorizontalOptions="FillAndExpand"
+                                             Grid.ColumnSpan="3"
+                                             Content="{Binding _50,Mode=TwoWay}" />
+
+
+
+
+                                <ImageButton xct:TouchEffect.PressedScale=".80"
+                                             xct:TouchEffect.AnimationDuration="10"
+                                             VerticalOptions="End"
+                                             BackgroundColor="Transparent"
+                                             HeightRequest="50"
+                                             WidthRequest="50"
+                                             Source="Calculator.png"
+                                             ClassId="50"
+                                             Clicked="ImageButton_Clicked" />
+                            </StackLayout>
+
+                            <StackLayout Orientation="Horizontal">
+
+                                <Label Text="$20"
+                                       WidthRequest="25"
+                                       VerticalOptions="Center"
+                                       Margin="0,10,0,0" />
+                                <RadioButton ControlTemplate="{StaticResource TextBoxOnlyNumber}"
+                                             VerticalOptions="Center"
+                                             FontFamily="{Binding Count_20}"
+                                             Grid.Column="1"
+                                             Grid.Row="0"
+                                             Grid.ColumnSpan="3"
+                                             Content="{Binding _20,Mode=TwoWay}"
+                                             HorizontalOptions="FillAndExpand" />
+
+                                <ImageButton xct:TouchEffect.PressedScale=".80"
+                                             xct:TouchEffect.AnimationDuration="10"
+                                             VerticalOptions="End"
+                                             BackgroundColor="Transparent"
+                                             HeightRequest="50"
+                                             WidthRequest="50"
+                                             Source="Calculator.png"
+                                             ClassId="20"
+                                             Clicked="ImageButton_Clicked" />
+                            </StackLayout>
+
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="$10"
+                                       WidthRequest="25"
+                                       VerticalOptions="Center"
+                                       Margin="0,10,0,0" />
+                                <RadioButton ControlTemplate="{StaticResource TextBoxOnlyNumber}"
+                                             VerticalOptions="Center"
+                                             FontFamily="{Binding Count_10}"
+                                             Grid.Column="1"
+                                             Grid.Row="0"
+                                             Grid.ColumnSpan="3"
+                                             Content="{Binding _10,Mode=TwoWay}"
+                                             HorizontalOptions="FillAndExpand" />
+
+                                <ImageButton xct:TouchEffect.PressedScale=".80"
+                                             xct:TouchEffect.AnimationDuration="10"
+                                             VerticalOptions="End"
+                                             BackgroundColor="Transparent"
+                                             HeightRequest="50"
+                                             WidthRequest="50"
+                                             Source="Calculator.png"
+                                             ClassId="10"
+                                             Clicked="ImageButton_Clicked" />
+                            </StackLayout>
+
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="$5"
+                                       WidthRequest="25"
+                                       VerticalOptions="Center"
+                                       Margin="0,10,0,0" />
+                                <RadioButton ControlTemplate="{StaticResource TextBoxOnlyNumber}"
+                                             VerticalOptions="Center"
+                                             FontFamily="{Binding Count_5}"
+                                             Grid.Column="1"
+                                             Grid.Row="0"
+                                             Grid.ColumnSpan="3"
+                                             Content="{Binding _5,Mode=TwoWay}"
+                                             HorizontalOptions="FillAndExpand" />
+
+                                <ImageButton xct:TouchEffect.PressedScale=".80"
+                                             xct:TouchEffect.AnimationDuration="10"
+                                             VerticalOptions="End"
+                                             BackgroundColor="Transparent"
+                                             HeightRequest="50"
+                                             WidthRequest="50"
+                                             Source="Calculator.png"
+                                             ClassId="5"
+                                             Clicked="ImageButton_Clicked" />
+                            </StackLayout>
+
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="$1"
+                                       WidthRequest="25"
+                                       VerticalOptions="Center"
+                                       Margin="0,10,0,0" />
+                                <RadioButton ControlTemplate="{StaticResource TextBoxOnlyNumber}"
+                                             VerticalOptions="Center"
+                                             FontFamily="{Binding Count_1}"
+                                             Grid.Column="1"
+                                             Grid.Row="0"
+                                             Grid.ColumnSpan="3"
+                                             Content="{Binding _1,Mode=TwoWay}"
+                                             HorizontalOptions="FillAndExpand" />
+
+                                <ImageButton xct:TouchEffect.PressedScale=".80"
+                                             xct:TouchEffect.AnimationDuration="10"
+                                             VerticalOptions="End"
+                                             BackgroundColor="Transparent"
+                                             HeightRequest="50"
+                                             WidthRequest="50"
+                                             Source="Calculator.png"
+                                             ClassId="1"
+                                             Clicked="ImageButton_Clicked" />
+                            </StackLayout>
+
+
+                        </StackLayout>
+
+
+                        <!--#endregion-->
+                    </StackLayout>
+
+
+
+                    <StackLayout Grid.Column="2">
+                        <RadioButton ControlTemplate="{StaticResource TextBoxOnlyNumber}"
+                                     VerticalOptions="Center"
+                                     FontFamily="Add Cash"
+                                     Grid.Column="1"
+                                     Grid.Row="0"
+                                     Grid.ColumnSpan="3"
+                                     HorizontalOptions="FillAndExpand"
+                                     Content="{Binding AddCash,Mode=TwoWay}" />
+
+                        <StackLayout Orientation="Horizontal">
+                            <RadioButton ControlTemplate="{StaticResource TextBoxOnlyNumber}"
+                                         VerticalOptions="Center"
+                                         FontFamily="Expense Total"
+                                         Grid.Column="1"
+                                         Grid.Row="0"
+                                         IsEnabled="False"
+                                         Grid.ColumnSpan="3"
+                                         HorizontalOptions="FillAndExpand"
+                                         Content="{Binding TotalExpense,Mode=TwoWay}" />
+
+                            <ImageButton xct:TouchEffect.PressedScale=".80"
+                                         xct:TouchEffect.AnimationDuration="10"
+                                         VerticalOptions="End"
+                                         BackgroundColor="Transparent"
+                                         HeightRequest="50"
+                                         WidthRequest="50"
+                                         Source="Calculator.png"
+                                         x:Name="ViewExpense"
+                                         Clicked="ViewExpense_Clicked" />
+                        </StackLayout>
+
+
+
+                        <Frame Padding="5"
+                               CornerRadius="10"
+                               Margin="5"
+                               BackgroundColor="DodgerBlue">
+
+                            <StackLayout>
+                                <RadioButton ControlTemplate="{StaticResource TextBoxHeaderWihte}"
+                                             VerticalOptions="Center"
+                                             FontFamily="Cash Total"
+                                             Grid.Column="1"
+                                             Grid.Row="0"
+                                             Grid.ColumnSpan="3"
+                                             HorizontalOptions="FillAndExpand"
+                                             Content="{Binding TotalCash}" />
+
+                                <RadioButton ControlTemplate="{StaticResource TextBoxHeaderWihte}"
+                                             VerticalOptions="Center"
+                                             FontFamily="Required Total"
+                                             Grid.Column="1"
+                                             Grid.Row="0"
+                                             Grid.ColumnSpan="3"
+                                             HorizontalOptions="FillAndExpand"
+                                             Content="{Binding TotalRequired}" />
+
+                                <RadioButton ControlTemplate="{StaticResource TextBoxHeaderWihte}"
+                                             VerticalOptions="Center"
+                                             FontFamily="Net Total"
+                                             Grid.Column="1"
+                                             Grid.Row="0"
+                                             Grid.ColumnSpan="3"
+                                             HorizontalOptions="FillAndExpand"
+                                             Content="{Binding NetCash,StringFormat='{0:0.00}'}"
+                                             TextColor="{Binding NetCashColor}" />
+                            </StackLayout>
+
+                        </Frame>
+
+
+
+
+
+                    </StackLayout>
+                </Grid>
+
+
+
+            </ScrollView>
+
+
+
+
+
+
+
+
+
+        </Frame>
+
+
+
+
+
+
+        <Grid IsVisible="{Binding Source={x:Reference GridExpense},Path=IsVisible}"
+              BackgroundColor="LightGray"
+              Opacity=".6" />
+
+        <Frame IsVisible="false"
+               x:Name="GridExpense"
+               Margin="15"
+               CornerRadius="10"
+               Padding="5"
+               BackgroundColor="White">
+            <StackLayout>
+                <Editor x:Name="txtExpenseStr"
+                        Keyboard="Telephone"
+                        VerticalOptions="FillAndExpand" />
+                <Button Text="Calcualte"
+                        x:Name="btnCalcualteExpense"
+                        Clicked="btnCalcualteExpense_Clicked" />
+            </StackLayout>
+        </Frame>
+
+
+    </Grid>
+
+
+
+
+</ContentPage>

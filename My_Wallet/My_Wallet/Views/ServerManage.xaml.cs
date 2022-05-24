@@ -18,10 +18,18 @@ namespace My_Wallet.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ServerManage : ContentPage
     {
+       
         public ServerManage()
         {
             InitializeComponent();
+
+            
+
+           
+
         }
+
+      
 
         string settingDownloadName = "ServerDonwloadLink";
         string strLastBackup = "strLastBackup";
@@ -31,14 +39,21 @@ namespace My_Wallet.Views
            lblRestoreLink.Text= Preferences.Get(settingDownloadName, string.Empty);
             lbllastBackup.Text = Preferences.Get(strLastBackup, string.Empty);
 
-         
+          
 
             base.OnAppearing();
         }
 
 
+      public  async void SaveToClipborad()
+        {
+            await Clipboard.SetTextAsync(Preferences.Get("ServerDonwloadLink", string.Empty));
 
-   
+
+
+            await this.DisplayToastAsync("Link Copy", 3000);
+        }
+
 
 
 

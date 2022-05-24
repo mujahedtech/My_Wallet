@@ -4,6 +4,7 @@
              x:Class="My_Wallet.Views.ServerManage"
              xmlns:Con="clr-namespace:My_Wallet.Convertors" xmlns:Language="clr-namespace:My_Wallet.Language"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              >
     <ContentPage.BindingContext>
         <Language:AccountManage />
@@ -16,11 +17,22 @@
 
 
         <ResourceDictionary>
-          
+
         </ResourceDictionary>
     </ContentPage.Resources>
     <StackLayout>
-        <Frame Style="{StaticResource FrameStyle}">
+        <Frame Style="{StaticResource FrameStyle}"
+               xct:TouchEffect.AnimationDuration="100"
+                               xct:TouchEffect.AnimationEasing="{x:Static Easing.CubicInOut}"
+                               xct:TouchEffect.PressedScale=".95"
+                               xct:TouchEffect.PressedOpacity=".6"
+                               xct:TouchEffect.PressedBackgroundColor="Gray"
+                               xct:TouchEffect.NormalBackgroundColor="White"
+                
+                   xct:TouchEffect.LongPressCommand="{Binding CopyLink}"
+                   xct:TouchEffect.LongPressDuration="300"
+               >
+
             <StackLayout>
                 <Label Text="{Binding PathBackuplbl}"/>
                 <Label x:Name="lblRestoreLink" />
@@ -61,8 +73,8 @@
 
 
 
-        
-       
+
+
 
 
 

@@ -3,11 +3,12 @@ using System;
 using System.Globalization;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using Xamarin.Forms.Xaml;
 
 namespace My_Wallet
 {
-    public partial class App : Application
+    public partial class App : Xamarin.Forms.Application
     {
         public App()
         {
@@ -16,7 +17,7 @@ namespace My_Wallet
             MainPage = new MainPage();
 
 
-           
+            Xamarin.Forms.Application.Current.On<Xamarin.Forms.PlatformConfiguration.Android>().UseWindowSoftInputModeAdjust(WindowSoftInputModeAdjust.Resize);
 
             Device.SetFlags(new[] { "Shapes_Experimental", "Brush_Experimental", "RadioButton_Experimental", "SwipeView_Experimental" });
 

@@ -107,5 +107,10 @@ namespace My_Wallet.Views
             }
            
         }
+
+        private async void btnCalculator_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushModalAsync(new Views.Calculator());
+        }
     }
 }
